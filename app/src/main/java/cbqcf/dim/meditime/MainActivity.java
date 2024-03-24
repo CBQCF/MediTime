@@ -7,6 +7,8 @@ import android.widget.GridLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity  extends AppCompatActivity {
 
     public GridLayout mainGrid;
@@ -19,7 +21,7 @@ public class MainActivity  extends AppCompatActivity {
         b.setText(getApplicationContext().getPackageName());
 
         mainGrid = findViewById(R.id.grid);
-        mainGrid.addView(new MedicPanel(getApplicationContext()));
+        mainGrid.addView(new MedicPanel(getApplicationContext() , "Doliprane" , 4 ));
 
 
     }
