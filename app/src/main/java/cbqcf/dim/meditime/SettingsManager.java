@@ -10,6 +10,12 @@ public class SettingsManager {
     private static final String KEY_MORNING_TIME = "morning_time";
     private static final String KEY_NIGHT_TIME = "night_time";
 
+
+    private static final long DEFAULT_DINER_TIME = 1;
+    private static final long DEFAULT_NOON_TIME = 1;
+    private static final long DEFAULT_MORNING_TIME = 1;
+    private static final long DEFAULT_NIGHT_TIME = 1;
+
     private SharedPreferences sharedPreferences;
     private static SettingsManager instance;
 
