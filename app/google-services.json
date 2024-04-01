@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "175597295526",
+    "project_id": "meditime-2be92",
+    "storage_bucket": "meditime-2be92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175597295526:android:00dac5230028874ce92167",
+        "android_client_info": {
+          "package_name": "cbqcf.dim.meditime"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzkOcJ7S10q6W7h3NdOS8dvRB4lxQJjJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
