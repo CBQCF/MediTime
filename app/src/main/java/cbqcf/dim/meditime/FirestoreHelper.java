@@ -57,8 +57,6 @@ public class FirestoreHelper {
                         Boolean adaptation = document.getBoolean("adaptation");
                         String id = document.getId();
                         callback.onSuccess(id, name, description, adaptation);
-                        // Assuming there is only one medication with the provided name,
-                        // you can break the loop after finding the first match.
                         return;
                     }
                     callback.onError("Medication with name " + name + " not found.");
@@ -69,9 +67,11 @@ public class FirestoreHelper {
         });
     }
 
-    public class FirestoreCallback {
-        Medication onSuccess(String id, String name, String description, Boolean adaptation){
-            return new Medication(id, name, description, adaptation, false, 0, 0);
+    public static class FirestoreCallback {
+        Medication result;
+        void onSuccess(String id, String name, String description, Boolean adaptation){
+            result = new Medication(id, name, description, adaptation, 0);
+            Log.i("DIM", "Got new medication : " + name + "; " + description);
         }
         void onError(String errorMessage){
             Log.w("DIM", errorMessage);
