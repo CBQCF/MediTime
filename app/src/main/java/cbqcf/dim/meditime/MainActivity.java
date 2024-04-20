@@ -21,14 +21,14 @@ public class MainActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FS = new FirestoreHelper();
-        DS = new MedicationDatasource(null);
+        DS = MedicationDatasource.getInstance(getApplicationContext());
 
         Button b = findViewById(R.id.button3);
         b.setText(getApplicationContext().getPackageName());
 
         mainGrid = findViewById(R.id.grid);
-        mainGrid.addView(new MedicPanel(getApplicationContext() , new Medication("45","Doliprane" , "" , false , false , 5000 , System.currentTimeMillis())));
-
+        loadMedications();
+        
         addMedication = findViewById(R.id.button4);
         addMedication.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +40,8 @@ public class MainActivity  extends AppCompatActivity {
 
     public void addMedication(Medication med){
         DS.addMedication(med);
+        MedicPanel panel = new MedicPanel(getApplicationContext(), med);
+        mainGrid.addView(panel);
     }
 
     public void addMedication(View v){
@@ -49,5 +51,10 @@ public class MainActivity  extends AppCompatActivity {
         startActivity(startActivity);
     }
 
-
+    public void loadMedications(){
+        for (Medication med : DS.loadMedications()){
+            MedicPanel panel = new MedicPanel(getApplicationContext(), med);
+            mainGrid.addView(panel);
+        }
+    }
 }

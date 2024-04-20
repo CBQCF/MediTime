@@ -14,6 +14,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class MedicationDatasource {
+
+    private static MedicationDatasource instance = null;
     private SQLiteDatabase database;
     private final DatabaseHelper dbHelper;
     private final static String[] allColumns = {
@@ -24,8 +26,15 @@ public class MedicationDatasource {
             DatabaseHelper.KEY_ADAPTATION,
     };
 
-    public MedicationDatasource(Context context) {
+    private MedicationDatasource(Context context) {
         dbHelper = new DatabaseHelper(context);
+    }
+
+    public static synchronized MedicationDatasource getInstance(Context context) {
+        if (instance == null) {
+            instance = new MedicationDatasource(context);
+        }
+        return instance;
     }
 
     public void open() throws SQLException {
