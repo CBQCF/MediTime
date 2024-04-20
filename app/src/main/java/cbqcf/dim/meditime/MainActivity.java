@@ -28,7 +28,7 @@ public class MainActivity  extends AppCompatActivity {
 
         mainGrid = findViewById(R.id.grid);
         loadMedications();
-        
+
         addMedication = findViewById(R.id.button4);
         addMedication.setOnClickListener(new View.OnClickListener() {
             @Override
