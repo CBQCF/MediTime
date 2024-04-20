@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MediTime</string>
+    <string name="add">ADD</string>
 </resources>
