@@ -33,7 +33,11 @@ public class Medication {
         this.delay = delay;
     }
 
-    public long getNextTime(Timestamp lastTaken){
+    public void Take(){
+        MedicationDatasource.getInstance(null).TakeMedication(this);
+    }
+    public long getNextTime(){
+        Timestamp lastTaken = getLastTaken();
         if (delay <= 0b1111){
             // Special delay
             // Get the start of the day
@@ -84,6 +88,9 @@ public class Medication {
         }
     }
 
+    public Timestamp getLastTaken(){
+        return MedicationDatasource.getInstance(null).getLastTaken(this);
+    }
 
     public void setId(String val){
         id = val;
