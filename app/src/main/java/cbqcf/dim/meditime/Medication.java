@@ -1,13 +1,10 @@
 package cbqcf.dim.meditime;
 
-import android.util.Log;
 import androidx.annotation.NonNull;
-import java.util.Calendar;
 
 public class Medication {
 
     public String id;
-    private long lastTime;
 
     /*
      * Special delay codes
@@ -22,16 +19,13 @@ public class Medication {
     private String name;
     private String description;
     private Boolean adaptation; // Check if the medication time should be touched by the optimisation algorithm
-    private Boolean hasBeenTaken;
 
-    public Medication(String id, String name, String description, boolean adaptation, boolean hasBeenTaken, long delay, long lastTime){
+    public Medication(String id, String name, String description, boolean adaptation, long delay){
         this.id = id;
         this.name = name;
         this.description = description;
         this.adaptation = adaptation;
-        this.hasBeenTaken = hasBeenTaken;
         this.delay = delay;
-        this.lastTime = lastTime;
     }
 
     public long getNextTime() {
@@ -45,14 +39,6 @@ public class Medication {
 
     public void setId(String val){
         id = val;
-    }
-    public void setLastTime(long val){
-        if(val <= System.currentTimeMillis()) {
-            lastTime = val;
-        }
-        else {
-            Log.w("DIM", "Medication.setLastTime : Last time is ahead of current time");
-        }
     }
 
     public void setDelay(long val){
@@ -71,24 +57,15 @@ public class Medication {
         adaptation = val;
     }
 
-    public void setHasBeenTaken(boolean val) {
-        hasBeenTaken = val;
-    }
-
     public void take(){
         /*
          * Called when the medicine has been taken
          */
-        setLastTime(System.currentTimeMillis());
-        setHasBeenTaken(true);
+        //TODO
     }
 
     public long getDelay(){
         return delay;
-    }
-
-    public long getLastTime(){
-        return lastTime;
     }
 
     public String getDescription() {
@@ -101,10 +78,6 @@ public class Medication {
 
     public Boolean getAdaptation() {
         return adaptation;
-    }
-
-    public Boolean getHasBeenTaken() {
-        return hasBeenTaken;
     }
 
     public String getId() {
