@@ -24,7 +24,7 @@ public class MainActivity  extends AppCompatActivity {
         b.setText(getApplicationContext().getPackageName());
 
         mainGrid = findViewById(R.id.grid);
-
+        mainGrid.addView(new MedicPanel(getApplicationContext() , new Medication("45","Doliprane" , "" , false , false , 5000 , System.currentTimeMillis())));
 
 
     }
