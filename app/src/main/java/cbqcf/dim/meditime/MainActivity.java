@@ -29,7 +29,7 @@ public class MainActivity  extends AppCompatActivity {
         mainGrid = findViewById(R.id.grid);
 
 
-        addMedication = findViewById(R.id.addMedicationButton);
+        addMedication = findViewById(R.id.button4);
         addMedication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,15 +38,11 @@ public class MainActivity  extends AppCompatActivity {
         });
     }
 
-    public void addMedication(View v){
-        // Called when the button add is activated
-    }
-
     public void addMedication(Medication med){
         DS.addMedication(med);
     }
 
-    public void OnClickAdd(View v){
+    public void addMedication(View v){
         Toast.makeText(this, "Retour Main", Toast.LENGTH_SHORT).show();
         Intent startActivity = new Intent(this, MedicCreator.class);
         startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
