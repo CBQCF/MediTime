@@ -36,7 +36,7 @@ public class Medication {
     public void Take(){
         MedicationDatasource.getInstance(null).TakeMedication(this);
     }
-    public long getNextTime(){
+    public Timestamp getNextTime(){
         Timestamp lastTaken = getLastTaken();
         if (delay <= 0b1111){
             // Special delay
@@ -80,11 +80,11 @@ public class Medication {
                 Log.w("Medication", "No next time found for medication " + name + " with delay " + delay + " and last taken at " + lastTaken.toString());
             }
 
-            return nextTime;
+            return new Timestamp(nextTime);
         }
         else {
             // Delay in milliseconds
-            return lastTaken.getTime() + delay;
+            return new Timestamp(lastTaken.getTime() + delay);
         }
     }
 
