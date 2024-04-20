@@ -22,13 +22,24 @@
         android:layout_below="@id/editTextMedicationName"
         android:layout_margin="16dp"/>
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchMedicationDelay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextMedicationDescription"
+        android:text="@string/delay_interval"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="16dp"
+        />
+
     <EditText
         android:id="@+id/editTextMedicationDelay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Delay (in ms)"
         android:inputType="number"
-        android:layout_below="@id/editTextMedicationDescription"
+        android:layout_below="@id/switchMedicationDelay"
         android:layout_margin="16dp"/>
 
     <CheckBox
@@ -37,14 +48,6 @@
         android:layout_height="wrap_content"
         android:text="Adaptation"
         android:layout_below="@id/editTextMedicationDelay"
-        android:layout_margin="16dp"/>
-
-    <CheckBox
-        android:id="@+id/checkBoxHasBeenTaken"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Has Been Taken"
-        android:layout_below="@id/checkBoxAdaptation"
         android:layout_margin="16dp"/>
 
     <Button

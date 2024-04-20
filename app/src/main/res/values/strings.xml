@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MediTime</string>
     <string name="add">ADD</string>
+    <string name="delay_interval">Intervale</string>
 </resources>
