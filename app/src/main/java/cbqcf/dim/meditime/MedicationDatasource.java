@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
 
+import android.util.Log;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,7 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class MedicationDatasource {
     private SQLiteDatabase database;
-    private DatabaseHelper dbHelper;
+    private final DatabaseHelper dbHelper;
     private final static String[] allColumns = {
             DatabaseHelper.KEY_ID,
             DatabaseHelper.KEY_NAME,
@@ -103,5 +104,20 @@ public class MedicationDatasource {
         }
         cursor.close();
         return result;
+    }
+
+    public void TakeMedication(Medication medication){
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.KEY_MEDICATION_ID, medication.getId());
+        values.put(DatabaseHelper.KEY_DATE, System.currentTimeMillis());
+        database.insert(DatabaseHelper.TABLE_TAKEN, null, values);
+    }
+
+    public void deleteMedication(Medication medication) {
+
+        String id = medication.getId();
+        Log.i(DatabaseHelper.LOG , "Medication deleted with id: " + id);
+        database.delete(DatabaseHelper.TABLE_MEDICATIONS, DatabaseHelper.KEY_ID
+                + " = " + id, null);
     }
 }

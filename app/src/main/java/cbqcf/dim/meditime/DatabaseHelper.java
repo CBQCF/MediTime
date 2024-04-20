@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String LOG = "DIM";
+    public static final String LOG = "DIM";
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "medications.db";
 
@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Medications table create statement
     private static final String CREATE_TABLE_MEDICATIONS =
             "CREATE TABLE " + TABLE_MEDICATIONS + "("
-            + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_ID + " TEXT PRIMARY KEY,"
             + KEY_NAME + " TEXT,"
             + KEY_DESCRIPTION + " TEXT,"
             + KEY_DELAY + " INTEGER,"
@@ -47,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_TAKEN =
         "CREATE TABLE " + TABLE_TAKEN + "("
-        + KEY_MEDICATION_ID + " INTEGER,"
+        + KEY_MEDICATION_ID + " TEXT,"
         + KEY_DATE + " DATETIME,"
         + "PRIMARY KEY (" + KEY_MEDICATION_ID + "," + KEY_DATE + "),"
         + "FOREIGN KEY (" + KEY_MEDICATION_ID + ") REFERENCES " + TABLE_MEDICATIONS + "(" + KEY_ID + "))";
