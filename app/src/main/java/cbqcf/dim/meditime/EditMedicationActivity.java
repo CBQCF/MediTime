@@ -53,8 +53,10 @@ public class EditMedicationActivity extends AppCompatActivity {
         // Suppose medication is passed as a serializable extra
         Intent intent = getIntent();
         int medicationId = intent.getIntExtra("MEDICATION_ID" , -1 );
+        if(medicationId != -1)
          medication = MedicationManager.getInstance().getMedication(String.valueOf(medicationId));
-
+        else
+            medication= new Medication(-1,"","",false,0);
 
         loadData();
         switchInterval.setOnCheckedChangeListener((buttonView, isChecked) -> {
