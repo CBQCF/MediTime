@@ -14,8 +14,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class FirestoreHelper {
 
     private FirebaseFirestore db;
+    private static FirestoreHelper instance;
 
-    public FirestoreHelper() {
+    public static FirestoreHelper getInstance() {
+        if (instance == null) {
+            instance = new FirestoreHelper();
+        }
+        return instance;
+    }
+
+    private FirestoreHelper() {
         db = FirebaseFirestore.getInstance();
     }
 
