@@ -38,7 +38,7 @@ public class MedicPanel extends LinearLayout {
         initializeUI(context);
         this.medication = medication;
         this.ecart = medication.getDelay();
-        this.time = medication.getLastTime();
+        this.time = medication.getLastTaken().getTime();
         revalidateComponent();
         setOnClickListener(v -> openEditMedicationActivity(medication));
     }
