@@ -1,6 +1,8 @@
 package cbqcf.dim.meditime;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -66,6 +68,37 @@ public class EditMedicationActivity extends AppCompatActivity {
         });
         buttonSave.setOnClickListener(view -> saveData());
 
+    }
+
+    private void deleteMedic(){
+        MedicationDatasource.getInstance(getApplicationContext()).deleteMedication(medication);
+        returnToMainActivity(null);
+    }
+    public void showConfirmationDialog(View v ) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmer la suppression");
+        builder.setMessage("Êtes-vous sûr de vouloir supprimer ce médicament ?");
+
+        // Bouton OUI
+        builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Code pour supprimer le médicament
+                deleteMedic();
+            }
+        });
+
+        // Bouton NON
+        builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog and do nothing
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
     private String getTimeString(long millis) {
         int hours = (int) (millis / (1000 * 60 * 60));
