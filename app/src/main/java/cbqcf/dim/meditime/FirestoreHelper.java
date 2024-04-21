@@ -30,7 +30,7 @@ public class FirestoreHelper {
                         String name = document.getString("name");
                         String description = document.getString("description");
                         Boolean adaptation = document.getBoolean("adaptation");
-                        callback.onSuccess(medicationId, name, description, adaptation);
+                        callback.onSuccess(name, description, adaptation);
                     } else {
                         callback.onError("Medication with ID " + medicationId + " not found.");
                     }
@@ -56,7 +56,7 @@ public class FirestoreHelper {
                         String description = document.getString("description");
                         Boolean adaptation = document.getBoolean("adaptation");
                         String id = document.getId();
-                        callback.onSuccess(id, name, description, adaptation);
+                        callback.onSuccess(name, description, adaptation);
                         return;
                     }
                     callback.onError("Medication with name " + name + " not found.");
@@ -69,8 +69,8 @@ public class FirestoreHelper {
 
     public static class FirestoreCallback {
         Medication result;
-        void onSuccess(String id, String name, String description, Boolean adaptation){
-            result = new Medication(id, name, description, adaptation, 0);
+        void onSuccess(String name, String description, Boolean adaptation){
+            result = new Medication(-1, name, description, adaptation, 0);
             Log.i("DIM", "Got new medication : " + name + "; " + description);
         }
         void onError(String errorMessage){

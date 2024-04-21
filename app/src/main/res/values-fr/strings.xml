@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">MediTime</string>
+    <string name="add">Ajouter</string>
     <string name="delay_interval">Intervale</string>
+    <string name="delay_interval_hint">Intervale entre les prises</string>
+    <string name="description">Description</string>
+    <string name="hint_description">Entrer une description</string>
+    <string name="hint_medication_name">Entrer le nom du medicament</string>
+    <string name="morning">Matin</string>
+    <string name="noon">Midi</string>
+    <string name="evening">Soir</string>
+    <string name="night">Nuit</string>
+    <string name="save_hint">Enregistrer</string>
+    <string name="cancel_hint">Annuler</string>
 </resources>

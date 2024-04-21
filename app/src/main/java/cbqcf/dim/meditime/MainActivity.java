@@ -22,11 +22,13 @@ public class MainActivity  extends AppCompatActivity {
 
         FS = new FirestoreHelper();
         DS = MedicationDatasource.getInstance(getApplicationContext());
+        DS.open();
 
-
+        DS.addMedication(new Medication(-1, "Paracetamol", "Pour la douleur", true, 0b1000));
+        Button b = findViewById(R.id.button3);
+        b.setText(getApplicationContext().getPackageName());
 
         mainGrid = findViewById(R.id.grid);
-        MedicationDatasource.getInstance(getApplicationContext()).open();
         loadMedications();
 
         addMedication = findViewById(R.id.button4);

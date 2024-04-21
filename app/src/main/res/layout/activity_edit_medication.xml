@@ -1,71 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".EditMedicationActivity">
 
     <EditText
         android:id="@+id/editTextMedicationName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp"
+        android:hint="@string/hint_medication_name"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/editTextMedicationDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description"
-        android:inputType="textMultiLine"
-        android:layout_below="@id/editTextMedicationName"
-        android:layout_margin="16dp"/>
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switchMedicationDelay"
+        android:layout_margin="16dp"
+        android:hint="@string/hint_description"
+        android:inputType="textMultiLine" />
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextMedicationDescription"
-        android:text="@string/delay_interval"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textSize="16dp"
-        />
+        android:background="@color/special_bg"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editTextMedicationDelay"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchMedicationDelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/delay_interval"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/editTextMedicationDelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/delay_interval_hint"
+            android:inputType="number"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTimeSlots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <CheckBox
+                android:id="@+id/checkBoxMorning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/morning" />
+
+            <CheckBox
+                android:id="@+id/checkBoxNoon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/noon" />
+
+            <CheckBox
+                android:id="@+id/checkBoxEvening"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/evening" />
+
+            <CheckBox
+                android:id="@+id/checkBoxNight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/night" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Delay (in ms)"
-        android:inputType="number"
-        android:layout_below="@id/switchMedicationDelay"
-        android:layout_margin="16dp"/>
+        android:orientation="horizontal">
 
-    <CheckBox
-        android:id="@+id/checkBoxAdaptation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Adaptation"
-        android:layout_below="@id/editTextMedicationDelay"
-        android:layout_margin="16dp"/>
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="50"
+            android:text="@string/save_hint" />
 
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"/>
-
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-
-        android:layout_toLeftOf="@id/buttonSave"
-        android:layout_margin="16dp"/>
-
-</RelativeLayout>
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="50"
+            android:text="@string/cancel_hint" />
+    </LinearLayout>
+</LinearLayout>

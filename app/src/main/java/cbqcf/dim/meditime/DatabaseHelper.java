@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Medications table create statement
     private static final String CREATE_TABLE_MEDICATIONS =
             "CREATE TABLE " + TABLE_MEDICATIONS + "("
-            + KEY_ID + " TEXT PRIMARY KEY,"
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + KEY_NAME + " TEXT,"
             + KEY_DESCRIPTION + " TEXT,"
             + KEY_DELAY + " INTEGER,"
@@ -47,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_TAKEN =
         "CREATE TABLE " + TABLE_TAKEN + "("
-        + KEY_MEDICATION_ID + " TEXT,"
+        + KEY_MEDICATION_ID + " INTEGER,"
         + KEY_DATE + " DATETIME,"
         + "PRIMARY KEY (" + KEY_MEDICATION_ID + "," + KEY_DATE + "),"
         + "FOREIGN KEY (" + KEY_MEDICATION_ID + ") REFERENCES " + TABLE_MEDICATIONS + "(" + KEY_ID + "))";
@@ -60,12 +60,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.i(LOG, "Creating database");
         db.execSQL(CREATE_TABLE_MEDICATIONS);
+        db.execSQL(CREATE_TABLE_TAKEN);
+        Log.i(LOG, "Database created");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i(LOG, "Upgrading database from " + oldVersion + " to " + newVersion);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MEDICATIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TAKEN);
         onCreate(db);
     }
 }

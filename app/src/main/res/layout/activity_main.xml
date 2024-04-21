@@ -7,8 +7,8 @@
     android:padding="16dp">
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/linearLayout2"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,43 +18,42 @@
             android:id="@+id/grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:padding="8dp"
-        android:alignmentMode="alignMargins"
-        android:columnOrderPreserved="false"> <!-- Ensures consistent layout on different screen sizes -->
+            android:columnCount="1"
+            android:padding="8dp"
+            android:columnOrderPreserved="false"> <!-- Ensures consistent layout on different screen sizes -->
 
-        <!-- Dynamic content should be added here -->
-    </GridLayout>
-</ScrollView>
+            <!-- Dynamic content should be added here -->
+        </GridLayout>
+    </ScrollView>
 
-<LinearLayout
-android:id="@+id/linearLayout2"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:orientation="horizontal"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintBottom_toBottomOf="parent">
-
-<Button
-    android:id="@+id/button3"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Button"/>
-
-<Space
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="addMedication"
-        android:text="+" />
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="OnClickAdd"
+                android:text="+" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">MediTime</string>
-    <string name="add">ADD</string>
-    <string name="delay_interval">Intervale</string>
+    <string name="add">Add</string>
+    <string name="delay_interval">Interval</string>
+    <string name="delay_interval_hint">Interval between doses</string>
+    <string name="description">Description</string>
+    <string name="hint_description">Enter a description</string>
+    <string name="hint_medication_name">Enter medication name</string>
+    <string name="morning">Morning</string>
+    <string name="noon">Noon</string>
+    <string name="evening">Evening</string>
+    <string name="night">Night</string>
+    <string name="save_hint">Save</string>
+    <string name="cancel_hint">Cancel</string>
 </resources>

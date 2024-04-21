@@ -14,7 +14,7 @@ public class MedicationManager {
     }
 
     public void addMedication(Medication medication) {
-        medications.put(medication.getId(), medication);
+        medications.put(String.valueOf(medication.getId()), medication);
     }
 
     public Medication getMedication(String id) {
@@ -22,6 +22,6 @@ public class MedicationManager {
     }
 
     public void updateMedication(Medication medication) {
-        medications.put(medication.getId(), medication);
+        medications.put(String.valueOf(medication.getId()), medication);
     }
 }

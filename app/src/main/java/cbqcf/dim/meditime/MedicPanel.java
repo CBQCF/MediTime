@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
 public class MedicPanel extends LinearLayout {
@@ -38,7 +39,11 @@ public class MedicPanel extends LinearLayout {
         initializeUI(context);
         this.medication = medication;
         this.ecart = medication.getDelay();
-        this.time = medication.getLastTaken().getTime();
+        Timestamp lastTaken = medication.getLastTaken();
+        this.time = 0;
+        if(lastTaken != null) {
+            this.time = lastTaken.getTime();
+        }
         revalidateComponent();
         setOnClickListener(v -> openEditMedicationActivity(medication));
     }
@@ -68,7 +73,7 @@ public class MedicPanel extends LinearLayout {
     }
 
     public void openEditMedicationActivity(Medication medication) {
-        MedicationManager.getInstance().addMedication(medication);  // Assurez-vous que la médication est ajoutée
+        MedicationManager.getInstance().updateMedication(medication );
         Intent intent = new Intent(getContext(), EditMedicationActivity.class);
         intent.putExtra("MEDICATION_ID", medication.getId());
         getContext().startActivity(intent);
@@ -109,8 +114,10 @@ public class MedicPanel extends LinearLayout {
     }
 
     private void updateLayout() {
-        boolean outOfTime = isOutime();
-        int backgroundColor = outOfTime ? Color.GREEN : Color.RED;
+        int backgroundColor = Color.YELLOW;
+        if(time != 0)
+            backgroundColor = isOutime() ? Color.GREEN : Color.RED;
+
         Drawable back = mediLayout.getBackground();
         if (back != null) {
             back.setColorFilter(new BlendModeColorFilter(backgroundColor, BlendMode.SRC_ATOP));

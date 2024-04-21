@@ -15,8 +15,6 @@ public class EditMedicationActivity extends AppCompatActivity {
     private EditText editTextName;
     private EditText editTextDescription;
     private EditText editTextDelay;
-    private CheckBox checkBoxAdaptation;
-    private CheckBox checkBoxHasBeenTaken;
 
     private Medication medication;
 
@@ -28,8 +26,6 @@ public class EditMedicationActivity extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextMedicationName);
         editTextDescription = findViewById(R.id.editTextMedicationDescription);
         editTextDelay = findViewById(R.id.editTextMedicationDelay);
-        checkBoxAdaptation = findViewById(R.id.checkBoxAdaptation);
-
         Button buttonSave = findViewById(R.id.buttonSave);
         Button buttonCancel = findViewById(R.id.buttonCancel);
 
@@ -64,16 +60,12 @@ public class EditMedicationActivity extends AppCompatActivity {
         editTextName.setText(medication.getName());
         editTextDescription.setText(medication.getDescription());
         editTextDelay.setText(String.valueOf(medication.getDelay()));
-        checkBoxAdaptation.setChecked(medication.getAdaptation());
-
     }
 
     private void saveData() {
         medication.setName(editTextName.getText().toString());
         medication.setDescription(editTextDescription.getText().toString());
         medication.setDelay(timeSelected);
-        medication.setAdaptation(checkBoxAdaptation.isChecked());
-
 
         // Logic to update medication in database or return result
         setResult(RESULT_OK); // You can also pass the updated medication back

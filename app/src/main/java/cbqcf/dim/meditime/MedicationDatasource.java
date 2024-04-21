@@ -92,21 +92,21 @@ public class MedicationDatasource {
     }
     public Medication cursorToMedication(Cursor cursor) {
         return new Medication(
-                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_ID)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_ID)),
                 cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_NAME)),
                 cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_DESCRIPTION)),
                 cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_ADAPTATION)) > 0,
                 cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_DELAY))
         );
     }
-    public Medication newMedication(String id, String name, String description, boolean adaptation, long delay){
+    public Medication newMedication(int id, String name, String description, boolean adaptation, long delay){
         Medication newMedication = new Medication(id, name, description, adaptation, delay);
         addMedication(newMedication);
         return newMedication;
     }
 
     public Timestamp getLastTaken(Medication medication){
-        Cursor cursor = database.query(DatabaseHelper.TABLE_TAKEN, new String[]{DatabaseHelper.KEY_DATE}, DatabaseHelper.KEY_MEDICATION_ID + " = ?", new String[]{medication.getId()}, null, null, DatabaseHelper.KEY_DATE + " DESC", "1");
+        Cursor cursor = database.query(DatabaseHelper.TABLE_TAKEN, new String[]{DatabaseHelper.KEY_DATE}, DatabaseHelper.KEY_MEDICATION_ID + " = ?", new String[]{String.valueOf(medication.getId())}, null, null, DatabaseHelper.KEY_DATE + " DESC", "1");
         Timestamp result = null;
         if (cursor.moveToFirst()) {
             result = new Timestamp(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_DATE)));
@@ -124,7 +124,7 @@ public class MedicationDatasource {
 
     public void deleteMedication(Medication medication) {
 
-        String id = medication.getId();
+        int id = medication.getId();
         Log.i(DatabaseHelper.LOG , "Medication deleted with id: " + id);
         database.delete(DatabaseHelper.TABLE_MEDICATIONS, DatabaseHelper.KEY_ID
                 + " = " + id, null);

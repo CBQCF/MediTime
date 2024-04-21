@@ -9,7 +9,7 @@ import java.util.Calendar;
 
 public class Medication {
 
-    public String id;
+    public int id;
 
     /*
      * Special delay codes
@@ -25,7 +25,7 @@ public class Medication {
     private String description;
     private Boolean adaptation; // Check if the medication time should be touched by the optimisation algorithm
 
-    public Medication(String id, String name, String description, boolean adaptation, long delay){
+    public Medication(int id, String name, String description, boolean adaptation, long delay){
         this.id = id;
         this.name = name;
         this.description = description;
@@ -92,7 +92,7 @@ public class Medication {
         return MedicationDatasource.getInstance(null).getLastTaken(this);
     }
 
-    public void setId(String val){
+    public void setId(int val){
         id = val;
     }
 
@@ -128,7 +128,7 @@ public class Medication {
         return adaptation;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
