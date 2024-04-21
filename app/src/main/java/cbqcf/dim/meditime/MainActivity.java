@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity  extends AppCompatActivity {
     private FirestoreHelper FS;
     private MedicationDatasource DS;
+    private Button addMedication;
     public GridLayout mainGrid;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +44,13 @@ public class MainActivity  extends AppCompatActivity {
         Intent startActivity = new Intent(this, MedicCreator.class);
         startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startActivity);
+    }
+
+    public void openEditor(View v )
+    {
+        MedicPanel medicPanel = (MedicPanel)v ;
+
+        medicPanel.openEditMedicationActivity(medicPanel.getMedication());
     }
 
     public void loadMedications(){

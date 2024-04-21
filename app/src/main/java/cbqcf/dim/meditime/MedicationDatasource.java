@@ -90,6 +90,20 @@ public class MedicationDatasource {
         values.put(DatabaseHelper.KEY_ADAPTATION, medication.getAdaptation() ? 1 : 0);
         database.insert(DatabaseHelper.TABLE_MEDICATIONS, null, values);
     }
+    public void updateMedication(Medication medication) {
+        ContentValues values = new ContentValues();
+        if(medication.getId() == -1){
+            addMedication(medication);
+            return;
+        }
+
+        values.put(DatabaseHelper.KEY_DELAY, medication.getDelay());
+        values.put(DatabaseHelper.KEY_NAME, medication.getName());
+        values.put(DatabaseHelper.KEY_DESCRIPTION, medication.getDescription());
+        values.put(DatabaseHelper.KEY_ADAPTATION, medication.getAdaptation() ? 1 : 0);
+
+        database.update(DatabaseHelper.TABLE_MEDICATIONS, values,"id=?",new String[]{String.valueOf(medication.id)});
+    }
     public Medication cursorToMedication(Cursor cursor) {
         return new Medication(
                 cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_ID)),
