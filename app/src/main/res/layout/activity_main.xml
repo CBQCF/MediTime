@@ -14,16 +14,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/linearLayout2">
 
-        <GridLayout
+        <LinearLayout
             android:id="@+id/grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="1"
+
             android:padding="8dp"
-            android:columnOrderPreserved="false"> <!-- Ensures consistent layout on different screen sizes -->
+            android:columnOrderPreserved="false"
+            android:orientation="vertical"> <!-- Ensures consistent layout on different screen sizes -->
 
             <!-- Dynamic content should be added here -->
-        </GridLayout>
+        </LinearLayout>
     </ScrollView>
 
     <LinearLayout

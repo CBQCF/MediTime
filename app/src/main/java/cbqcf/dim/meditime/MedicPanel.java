@@ -115,7 +115,7 @@ public class MedicPanel extends LinearLayout {
     }
 
     private String LongToHmsFormat(long t) {
-        long hours = TimeUnit.MILLISECONDS.toHours(t);
+        long hours = TimeUnit.MILLISECONDS.toHours(t) % 100;
         long minutes = TimeUnit.MILLISECONDS.toMinutes(t) % 60;
         long seconds = TimeUnit.MILLISECONDS.toSeconds(t) % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);

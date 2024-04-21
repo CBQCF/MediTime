@@ -39,7 +39,7 @@ public class EditMedicationActivity extends AppCompatActivity {
         loadData();
 
         buttonSave.setOnClickListener(view -> saveData());
-        buttonCancel.setOnClickListener(view -> finish());
+
     }
     private String getTimeString(long millis) {
         int hours = (int) (millis / (1000 * 60 * 60));
