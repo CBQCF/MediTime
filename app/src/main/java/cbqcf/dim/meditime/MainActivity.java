@@ -32,7 +32,7 @@ public class MainActivity  extends AppCompatActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        DS.close();
+
     }
 
     public void addMedication(Medication med){

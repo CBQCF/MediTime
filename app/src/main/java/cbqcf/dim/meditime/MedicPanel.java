@@ -7,6 +7,7 @@ import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -37,21 +38,30 @@ public class MedicPanel extends LinearLayout {
 
     public MedicPanel(Context context, Medication medication) {
         super(context);
-        initializeUI(context);
         this.medication = medication;
         this.ecart = medication.getDelay();
         Timestamp lastTaken = medication.getLastTaken();
-        this.time = 0;
+
         if(lastTaken != null) {
             this.time = lastTaken.getTime();
+        }else{
+            this.time = 0;
         }
+        initializeUI(context);
         revalidateComponent();
+        mediLayout.setOnLongClickListener(  v->onLongClick(v));
         mediLayout.setOnClickListener(v->openEditor(v));
     }
 
+    public boolean onLongClick(View v){
+        medication.Take();
+        time = medication.getLastTaken().getTime();
+
+        return  true;
+    }
     public MedicPanel(Context context) {
         super(context);
-        initializeUI(context);
+
         resetTime();
     }
 
@@ -67,9 +77,9 @@ public class MedicPanel extends LinearLayout {
     }
     public MedicPanel(Context context, String name, int EcartH) {
         this(context);
-        this.ecart = TimeUnit.HOURS.toMillis(EcartH);
+
         nameView.setText(name);
-        revalidateComponent();
+
     }
 
     private void initializeUI(Context context) {
@@ -111,7 +121,7 @@ public class MedicPanel extends LinearLayout {
     }
 
     private long getTimeSinceLast() {
-        return System.currentTimeMillis() - time;
+        return  (time - System.currentTimeMillis() )* -1;
     }
 
     private String LongToHmsFormat(long t) {
@@ -122,7 +132,17 @@ public class MedicPanel extends LinearLayout {
     }
 
     private void updateTime() {
-        timeView.setText(LongToHmsFormat(getTimeSinceLast()));
+        if(time == 0 )
+        {
+            timeView.setText("Aucune Prise");
+            return;
+        }
+        String toAdd = isOutime() ? "+":"-";
+       if (medication != null ) {
+           timeView.setText(toAdd + LongToHmsFormat(   medication.getNextTime().getTime() - System.currentTimeMillis()       ));
+       }
+       else
+        timeView.setText(toAdd + LongToHmsFormat(getTimeSinceLast()));
     }
 
     private void updateLayout() {
