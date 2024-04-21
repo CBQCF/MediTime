@@ -2,44 +2,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MediLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:id="@+id/MediLayout"
     android:background="@drawable/medi_background"
-    android:elevation="4dp">
+    android:clickable="true"
+    android:elevation="4dp"
+    android:longClickable="true"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/Name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Medication Name"
-        android:gravity="center_horizontal"
-        android:textSize="18sp"
-        android:textColor="#FF6200EE"
+        android:layout_marginBottom="8dp"
         android:fontFamily="@font/roboto_medium"
-        android:layout_marginBottom="8dp"/>
+        android:gravity="center_horizontal"
+        android:text="Medication Name"
+        android:textColor="#FF6200EE"
+        android:textSize="18sp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="6dp"
-        android:progressDrawable="@drawable/custom_progress_bar"
+        android:layout_marginBottom="8dp"
         android:max="100"
         android:progress="45"
-        android:layout_marginBottom="8dp"/>
+        android:progressDrawable="@drawable/custom_progress_bar" />
 
     <TextView
         android:id="@+id/textTimer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="03:00"
-        android:textSize="16sp"
+        android:fontFamily="@font/roboto_black"
         android:gravity="center_horizontal"
+        android:text="03:00"
         android:textColor="#DE000000"
-        android:fontFamily="@font/roboto_black"/>
+        android:textSize="16sp" />
 
 </LinearLayout>

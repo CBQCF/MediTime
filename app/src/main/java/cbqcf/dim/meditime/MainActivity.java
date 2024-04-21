@@ -24,7 +24,7 @@ public class MainActivity  extends AppCompatActivity {
         DS = MedicationDatasource.getInstance(getApplicationContext());
         DS.open();
 
-        DS.addMedication(new Medication(-1, "Paracetamol", "Pour la douleur", true, 0b1000));
+
         Button b = findViewById(R.id.button3);
         b.setText(getApplicationContext().getPackageName());
 
@@ -51,6 +51,13 @@ public class MainActivity  extends AppCompatActivity {
         Intent startActivity = new Intent(this, MedicCreator.class);
         startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startActivity);
+    }
+
+    public void openEditor(View v )
+    {
+        MedicPanel medicPanel = (MedicPanel)v ;
+
+        medicPanel.openEditMedicationActivity(medicPanel.getMedication());
     }
 
     public void loadMedications(){

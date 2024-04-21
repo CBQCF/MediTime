@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,7 +46,7 @@ public class MedicPanel extends LinearLayout {
             this.time = lastTaken.getTime();
         }
         revalidateComponent();
-        setOnClickListener(v -> openEditMedicationActivity(medication));
+        mediLayout.setOnClickListener(v->openEditor(v));
     }
 
     public MedicPanel(Context context) {
@@ -54,6 +55,16 @@ public class MedicPanel extends LinearLayout {
         resetTime();
     }
 
+
+    public Medication getMedication() {
+        return medication;
+    }
+    public void openEditor(View v )
+    {
+
+
+       openEditMedicationActivity(getMedication());
+    }
     public MedicPanel(Context context, String name, int EcartH) {
         this(context);
         this.ecart = TimeUnit.HOURS.toMillis(EcartH);
@@ -76,6 +87,7 @@ public class MedicPanel extends LinearLayout {
         MedicationManager.getInstance().updateMedication(medication );
         Intent intent = new Intent(getContext(), EditMedicationActivity.class);
         intent.putExtra("MEDICATION_ID", medication.getId());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
     }
 

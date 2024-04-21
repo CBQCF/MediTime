@@ -99,6 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_weight="50"
+            android:onClick="returnToMainActivity"
             android:text="@string/cancel_hint" />
     </LinearLayout>
 </LinearLayout>

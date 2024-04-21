@@ -2,6 +2,7 @@ package cbqcf.dim.meditime;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,10 +14,12 @@ import android.widget.Toast;
 public class MedicCreator extends AppCompatActivity {
 
     TextView nameText, timeText;
+    private Context context ;
     private long timeSelected = -1;  // Default to -1 to detect if time is not set
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medic_creator);
 
@@ -43,7 +46,8 @@ public class MedicCreator extends AppCompatActivity {
             Toast.makeText(this, "Please select a time", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        Medication medication = new Medication(-1,name , "" , false , timeSelected);
+        MedicationDatasource.getInstance(context).addMedication(medication);
         // Process the name and timeSelected here (e.g., save to database or send to another activity)
         Toast.makeText(this, "Medication added: " + name + " at " + getTimeString(timeSelected), Toast.LENGTH_LONG).show();
         returnToMainActivity(null);

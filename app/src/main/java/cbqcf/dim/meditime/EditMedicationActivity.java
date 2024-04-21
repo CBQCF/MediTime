@@ -1,6 +1,7 @@
 package cbqcf.dim.meditime;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,9 +31,9 @@ public class EditMedicationActivity extends AppCompatActivity {
         Button buttonCancel = findViewById(R.id.buttonCancel);
 
         // Suppose medication is passed as a serializable extra
-
-        String medicationId = getIntent().getStringExtra("MEDICATION_ID");
-         medication = MedicationManager.getInstance().getMedication(medicationId);
+        Intent intent = getIntent();
+        int medicationId = intent.getIntExtra("MEDICATION_ID" , -1 );
+         medication = MedicationManager.getInstance().getMedication(String.valueOf(medicationId));
 
 
         loadData();
@@ -61,14 +62,21 @@ public class EditMedicationActivity extends AppCompatActivity {
         editTextDescription.setText(medication.getDescription());
         editTextDelay.setText(String.valueOf(medication.getDelay()));
     }
-
+    public void returnToMainActivity(View v) {
+        Intent intent = new Intent(this, MainActivity.class);
+        // FLAG_ACTIVITY_CLEAR_TASK will clear any existing task that would be associated with the activity
+        // FLAG_ACTIVITY_NEW_TASK will start a new task with MainActivity as the root
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
     private void saveData() {
         medication.setName(editTextName.getText().toString());
         medication.setDescription(editTextDescription.getText().toString());
         medication.setDelay(timeSelected);
 
         // Logic to update medication in database or return result
+        MedicationDatasource.getInstance(getApplicationContext()).updateMedication(medication);
         setResult(RESULT_OK); // You can also pass the updated medication back
-        finish();
+        returnToMainActivity(null);
     }
 }
