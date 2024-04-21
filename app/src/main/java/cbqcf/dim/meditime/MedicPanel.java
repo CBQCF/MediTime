@@ -139,7 +139,7 @@ public class MedicPanel extends LinearLayout {
         }
         String toAdd = isOutime() ? "+":"-";
        if (medication != null ) {
-           timeView.setText(toAdd + LongToHmsFormat(   medication.getNextTime().getTime() - System.currentTimeMillis()       ));
+           timeView.setText(toAdd + LongToHmsFormat(   Math.abs(medication.getNextTime().getTime() - System.currentTimeMillis())       ));
        }
        else
         timeView.setText(toAdd + LongToHmsFormat(getTimeSinceLast()));
