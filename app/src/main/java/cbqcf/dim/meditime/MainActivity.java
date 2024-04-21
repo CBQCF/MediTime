@@ -29,12 +29,6 @@ public class MainActivity  extends AppCompatActivity {
         loadMedications();
     }
 
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-
-    }
-
     public void addMedication(Medication med){
         DS.addMedication(med);
         reloadMedications();
