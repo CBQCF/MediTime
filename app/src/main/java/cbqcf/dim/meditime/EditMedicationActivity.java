@@ -7,15 +7,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class EditMedicationActivity extends AppCompatActivity {
 
     private EditText editTextName;
     private EditText editTextDescription;
     private EditText editTextDelay;
+
+    private EditText editTextMedicationDelay;
+
+    private LinearLayout checkBoxLayout;
+    private CheckBox checkBoxMorning;
+    private CheckBox checkBoxNoon;
+    private CheckBox checkBoxEvening;
+    private CheckBox checkBoxNight;
 
     private Medication medication;
 
@@ -27,9 +39,15 @@ public class EditMedicationActivity extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextMedicationName);
         editTextDescription = findViewById(R.id.editTextMedicationDescription);
         editTextDelay = findViewById(R.id.editTextMedicationDelay);
+        checkBoxMorning = findViewById(R.id.checkBoxMorning);
+        checkBoxNoon = findViewById(R.id.checkBoxNoon);
+        checkBoxEvening = findViewById(R.id.checkBoxEvening);
+        checkBoxNight = findViewById(R.id.checkBoxNight);
+        checkBoxLayout = findViewById(R.id.linearLayoutTimeSlots);
+        EditMedicationActivity.this.setTitle("Edit Medication");
         Button buttonSave = findViewById(R.id.buttonSave);
         Button buttonCancel = findViewById(R.id.buttonCancel);
-
+        SwitchMaterial switchInterval = findViewById(R.id.switchMedicationDelay);
         // Suppose medication is passed as a serializable extra
         Intent intent = getIntent();
         int medicationId = intent.getIntExtra("MEDICATION_ID" , -1 );
@@ -37,7 +55,15 @@ public class EditMedicationActivity extends AppCompatActivity {
 
 
         loadData();
-
+        switchInterval.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                editTextDelay.setVisibility(View.VISIBLE);
+                checkBoxLayout.setVisibility(View.GONE);
+            } else {
+                editTextDelay.setVisibility(View.GONE);
+                checkBoxLayout.setVisibility(View.VISIBLE);
+            }
+        });
         buttonSave.setOnClickListener(view -> saveData());
 
     }
