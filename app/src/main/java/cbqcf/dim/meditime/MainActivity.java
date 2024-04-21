@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity  extends AppCompatActivity {
     private FirestoreHelper FS;
     private MedicationDatasource DS;
-    private Button addMedication;
     public GridLayout mainGrid;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,26 +23,19 @@ public class MainActivity  extends AppCompatActivity {
         DS = MedicationDatasource.getInstance(getApplicationContext());
         DS.open();
 
-        DS.addMedication(new Medication(-1, "Paracetamol", "Pour la douleur", true, 0b1000));
-        Button b = findViewById(R.id.button3);
-        b.setText(getApplicationContext().getPackageName());
-
         mainGrid = findViewById(R.id.grid);
         loadMedications();
+    }
 
-        addMedication = findViewById(R.id.button4);
-        addMedication.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addMedication(v);
-            }
-        });
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        DS.close();
     }
 
     public void addMedication(Medication med){
         DS.addMedication(med);
-        MedicPanel panel = new MedicPanel(getApplicationContext(), med);
-        mainGrid.addView(panel);
+        reloadMedications();
     }
 
     public void addMedication(View v){
@@ -58,5 +50,17 @@ public class MainActivity  extends AppCompatActivity {
             MedicPanel panel = new MedicPanel(getApplicationContext(), med);
             mainGrid.addView(panel);
         }
+    }
+
+    public void reloadMedications(){
+        mainGrid.removeAllViews();
+        loadMedications();
+    }
+
+    public void ClearMedications(View v){
+        for(Medication med : DS.loadMedications()){
+            DS.deleteMedication(med);
+        }
+        reloadMedications();
     }
 }
