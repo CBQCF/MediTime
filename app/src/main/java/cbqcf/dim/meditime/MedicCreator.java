@@ -1,21 +1,19 @@
 package cbqcf.dim.meditime;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 public class MedicCreator extends AppCompatActivity {
 
-    TextView nameText, timeText;
+    TextView nameText;
+    LinearLayout mainGrid;
     private Context context ;
-    private long timeSelected = -1;  // Default to -1 to detect if time is not set
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,33 +21,32 @@ public class MedicCreator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medic_creator);
 
-        nameText = findViewById(R.id.creator_name);
-        Button addButton = findViewById(R.id.add);
+        nameText = findViewById(R.id.medication_name);
+        mainGrid = findViewById(R.id.grid);
+        ImageButton searchButton = findViewById(R.id.search);
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addMedication();
-            }
+        searchButton.setOnClickListener(v -> {
+            mainGrid.removeAllViews();
+            FirestoreHelper.getInstance().fetchMedicationByName(nameText.getText().toString(), new FirestoreHelper.FirestoreCallback() {
+                @Override
+                public void onSuccess(String name, String description, Boolean adaptation) {
+                    Medication medication = new Medication(-1, name, description, adaptation, 0);
+                    mainGrid.addView(new SearchResult(context, medication));
+                }
+            });
         });
+
+        ImageButton customButton = findViewById(R.id.custom);
+        customButton.setOnClickListener(v -> addMedication());
     }
 
     private void addMedication() {
-        String name = nameText.getText().toString();
-
-        if (name.isEmpty()) {
-            Toast.makeText(this, "Please enter a medication name", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (timeSelected == -1) {
-            Toast.makeText(this, "Please select a time", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Medication medication = new Medication(-1,name , "" , false , timeSelected);
-        MedicationDatasource.getInstance(context).addMedication(medication);
-        // Process the name and timeSelected here (e.g., save to database or send to another activity)
-        Toast.makeText(this, "Medication added: " + name + " at " + getTimeString(timeSelected), Toast.LENGTH_LONG).show();
-        returnToMainActivity(null);
+        Intent intent = new Intent(this, EditMedicationActivity.class);
+        intent.putExtra("MEDICATION_NAME", nameText.getText().toString());
+        intent.putExtra("MEDICATION_DESCRIPTION", "");
+        intent.putExtra("MEDICATION_ADAPTATION", true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
     /*
     public void getInputTime(View v) {
@@ -77,4 +74,5 @@ public class MedicCreator extends AppCompatActivity {
         int minutes = (int) (millis / (1000 * 60)) % 60;
         return String.format("%02d:%02d", hours, minutes);
     }
+
 }

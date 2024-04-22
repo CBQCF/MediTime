@@ -49,8 +49,8 @@ public class MedicPanel extends LinearLayout {
         }
         initializeUI(context);
         revalidateComponent();
-        mediLayout.setOnLongClickListener(  v->onLongClick(v));
-        mediLayout.setOnClickListener(v->openEditor(v));
+        mediLayout.setOnLongClickListener(this::onLongClick);
+        mediLayout.setOnClickListener(this::openEditor);
     }
 
     public boolean onLongClick(View v){

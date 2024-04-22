@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ResLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/special_bg"
     android:clickable="true"
     android:elevation="4dp"
-    android:longClickable="true"
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
     android:paddingVertical="2dp"

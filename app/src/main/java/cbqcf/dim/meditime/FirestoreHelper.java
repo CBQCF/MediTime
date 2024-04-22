@@ -65,7 +65,6 @@ public class FirestoreHelper {
                         Boolean adaptation = document.getBoolean("adaptation");
                         String id = document.getId();
                         callback.onSuccess(name, description, adaptation);
-                        return;
                     }
                     callback.onError("Medication with name " + name + " not found.");
                 } else {

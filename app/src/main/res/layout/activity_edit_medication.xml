@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FFFFFF"
-    android:backgroundTint="#00FFFFFF"
+    android:background="@color/teal_700"
     android:orientation="vertical"
     tools:context=".EditMedicationActivity">
 
@@ -33,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextMedicationDescription"
         android:background="@color/special_bg"
+        android:layout_margin="5dp"
         android:orientation="vertical">
 
         <com.google.android.material.switchmaterial.SwitchMaterial
@@ -54,39 +54,49 @@
             android:inputType="number"
             android:visibility="gone" />
 
-        <LinearLayout
+        <GridLayout
             android:id="@+id/linearLayoutTimeSlots"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:columnCount="2"
+            >
 
             <CheckBox
                 android:id="@+id/checkBoxMorning"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/morning" />
+                android:layout_columnWeight="1"
+                android:text="@string/morning"
+                android:textSize="20sp"/>
 
             <CheckBox
                 android:id="@+id/checkBoxNoon"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/noon" />
+                android:layout_columnWeight="1"
+                android:text="@string/noon"
+                android:textSize="20sp"/>
 
             <CheckBox
                 android:id="@+id/checkBoxEvening"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evening" />
+                android:layout_columnWeight="1"
+                android:text="@string/evening"
+                android:textSize="20sp"/>
 
             <CheckBox
                 android:id="@+id/checkBoxNight"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/night" />
-        </LinearLayout>
+                android:layout_columnWeight="1"
+                android:text="@string/night"
+                android:textSize="20sp"/>
+        </GridLayout>
     </LinearLayout>
 
     <LinearLayout

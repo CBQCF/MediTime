@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TimePicker;
@@ -25,11 +26,12 @@ public class EditMedicationActivity extends AppCompatActivity {
 
     private EditText editTextMedicationDelay;
 
-    private LinearLayout checkBoxLayout;
+    private GridLayout checkBoxLayout;
     private CheckBox checkBoxMorning;
     private CheckBox checkBoxNoon;
     private CheckBox checkBoxEvening;
     private CheckBox checkBoxNight;
+    private SwitchMaterial switchInterval;
 
     private Medication medication;
 
@@ -49,14 +51,14 @@ public class EditMedicationActivity extends AppCompatActivity {
         EditMedicationActivity.this.setTitle("Edit Medication");
         Button buttonSave = findViewById(R.id.buttonSave);
         Button buttonCancel = findViewById(R.id.buttonCancel);
-        SwitchMaterial switchInterval = findViewById(R.id.switchMedicationDelay);
+        switchInterval = findViewById(R.id.switchMedicationDelay);
         // Suppose medication is passed as a serializable extra
         Intent intent = getIntent();
         int medicationId = intent.getIntExtra("MEDICATION_ID" , -1 );
         if(medicationId != -1)
          medication = MedicationManager.getInstance().getMedication(String.valueOf(medicationId));
         else
-            medication= new Medication(-1,"","",false,0);
+            medication= new Medication(-1,intent.getStringExtra("MEDICATION_NAME"),intent.getStringExtra("MEDICATION_DESCRIPTION"),intent.getBooleanExtra("MEDICATION_ADAPTATION", true),0);
 
         loadData();
         switchInterval.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -109,6 +111,13 @@ public class EditMedicationActivity extends AppCompatActivity {
     }
     long timeSelected = -1;
     public void getInputTime(View v) {
+        if(switchInterval.isChecked()){
+            showTimePicker();
+        } else {
+            showTimeSlotPicker();
+        }
+    }
+    private void showTimePicker() {
         TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -117,6 +126,12 @@ public class EditMedicationActivity extends AppCompatActivity {
             }
         }, 0, 0, true);
         dialog.show();
+    }
+
+    private void showTimeSlotPicker() {
+        if(checkBoxMorning.isChecked()) {
+            timeSelected = 8 * 3600 * 1000;
+        }
     }
     private void loadData() {
         editTextName.setText(medication.getName());
