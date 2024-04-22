@@ -24,7 +24,6 @@ public class MedicCreator extends AppCompatActivity {
         setContentView(R.layout.activity_medic_creator);
 
         nameText = findViewById(R.id.creator_name);
-        timeText = findViewById(R.id.creator_time);
         Button addButton = findViewById(R.id.add);
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +51,7 @@ public class MedicCreator extends AppCompatActivity {
         Toast.makeText(this, "Medication added: " + name + " at " + getTimeString(timeSelected), Toast.LENGTH_LONG).show();
         returnToMainActivity(null);
     }
-
+    /*
     public void getInputTime(View v) {
         TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -63,6 +62,8 @@ public class MedicCreator extends AppCompatActivity {
         }, 0, 0, true);
         dialog.show();
     }
+    */
+
     public void returnToMainActivity(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         // FLAG_ACTIVITY_CLEAR_TASK will clear any existing task that would be associated with the activity
