@@ -141,7 +141,7 @@ public class MedicPanel extends LinearLayout {
        if (medication != null ) {
            if(medication.getAdaptation() &&  isOutime())
                medication.setDelay( System.currentTimeMillis() -  medication.getLastTaken().getTime());
-           timeView.setText(toAdd + LongToHmsFormat(   Math.abs(medication.getNextTime().getTime() - System.currentTimeMillis())       ));
+           timeView.setText(toAdd + LongToHmsFormat(   Math.abs(medication.getNextTime().getTime() - System.currentTimeMillis())));
        }
        else
         timeView.setText(toAdd + LongToHmsFormat(getTimeSinceLast()));
