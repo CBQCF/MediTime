@@ -32,6 +32,7 @@ public class EditMedicationActivity extends AppCompatActivity {
     private CheckBox checkBoxEvening;
     private CheckBox checkBoxNight;
     private SwitchMaterial switchInterval;
+    private Switch addictionSwitch;
 
     private Medication medication;
 
@@ -52,6 +53,7 @@ public class EditMedicationActivity extends AppCompatActivity {
         Button buttonSave = findViewById(R.id.buttonSave);
         Button buttonCancel = findViewById(R.id.buttonCancel);
         switchInterval = findViewById(R.id.switchMedicationDelay);
+        addictionSwitch = findViewById(R.id.addiction_switch);
         // Suppose medication is passed as a serializable extra
         Intent intent = getIntent();
         int medicationId = intent.getIntExtra("MEDICATION_ID" , -1 );
@@ -148,6 +150,7 @@ public class EditMedicationActivity extends AppCompatActivity {
     private void saveData() {
         medication.setName(editTextName.getText().toString());
         medication.setDescription(editTextDescription.getText().toString());
+        medication.setAdaptation(addictionSwitch.isChecked());
         if(timeSelected == -1)
             medication.setDelay(Long.valueOf(editTextDelay.getText().toString()));
         else

@@ -136,4 +136,14 @@
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/medi_delete_24" />
 
+    <Switch
+        android:id="@+id/addiction_switch"
+        android:layout_width="133dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="278dp"
+        android:text="Addiction Mode" />
+
 </RelativeLayout>
