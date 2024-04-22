@@ -133,7 +133,10 @@ public class EditMedicationActivity extends AppCompatActivity {
     private void saveData() {
         medication.setName(editTextName.getText().toString());
         medication.setDescription(editTextDescription.getText().toString());
-        medication.setDelay(timeSelected);
+        if(timeSelected == -1)
+            medication.setDelay(Long.valueOf(editTextDelay.getText().toString()));
+        else
+            medication.setDelay(timeSelected);
 
         // Logic to update medication in database or return result
         MedicationDatasource.getInstance(getApplicationContext()).updateMedication(medication);
