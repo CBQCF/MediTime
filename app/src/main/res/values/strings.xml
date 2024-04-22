@@ -13,4 +13,6 @@
     <string name="save_hint">Save</string>
     <string name="cancel_hint">Cancel</string>
     <string name="search">Search</string>
+    <string name="delay_interval_minutes_hint">Minutes</string>
+    <string name="delay_interval_hours_hint">Hours</string>
 </resources>

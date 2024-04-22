@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,18 +14,22 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 public class EditMedicationActivity extends AppCompatActivity {
 
     private EditText editTextName;
     private EditText editTextDescription;
-    private EditText editTextDelay;
-
-    private EditText editTextMedicationDelay;
+    private LinearLayout linearLayoutDelay;
+    private TimePicker timePicker;
 
     private GridLayout checkBoxLayout;
     private CheckBox checkBoxMorning;
@@ -43,7 +48,8 @@ public class EditMedicationActivity extends AppCompatActivity {
 
         editTextName = findViewById(R.id.editTextMedicationName);
         editTextDescription = findViewById(R.id.editTextMedicationDescription);
-        editTextDelay = findViewById(R.id.editTextMedicationDelay);
+        linearLayoutDelay = findViewById(R.id.linearLayoutDelay);
+        timePicker = findViewById(R.id.timePicker);
         checkBoxMorning = findViewById(R.id.checkBoxMorning);
         checkBoxNoon = findViewById(R.id.checkBoxNoon);
         checkBoxEvening = findViewById(R.id.checkBoxEvening);
@@ -61,19 +67,18 @@ public class EditMedicationActivity extends AppCompatActivity {
          medication = MedicationManager.getInstance().getMedication(String.valueOf(medicationId));
         else
             medication= new Medication(-1,intent.getStringExtra("MEDICATION_NAME"),intent.getStringExtra("MEDICATION_DESCRIPTION"),intent.getBooleanExtra("MEDICATION_ADAPTATION", true),0);
-
-        loadData();
+        timePicker.setIs24HourView(true);
         switchInterval.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                editTextDelay.setVisibility(View.VISIBLE);
+                linearLayoutDelay.setVisibility(View.VISIBLE);
                 checkBoxLayout.setVisibility(View.GONE);
             } else {
-                editTextDelay.setVisibility(View.GONE);
+                linearLayoutDelay.setVisibility(View.GONE);
                 checkBoxLayout.setVisibility(View.VISIBLE);
             }
         });
         buttonSave.setOnClickListener(view -> saveData());
-
+        loadData();
     }
 
     private void deleteMedic(){
@@ -111,8 +116,9 @@ public class EditMedicationActivity extends AppCompatActivity {
         int minutes = (int) (millis / (1000 * 60)) % 60;
         return String.format("%02d:%02d", hours, minutes);
     }
+
     long timeSelected = -1;
-    public void getInputTime(View v) {
+    public void getInputTime() {
         if(switchInterval.isChecked()){
             showTimePicker();
         } else {
@@ -120,14 +126,9 @@ public class EditMedicationActivity extends AppCompatActivity {
         }
     }
     private void showTimePicker() {
-        TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                 timeSelected = (hourOfDay * 3600 + minute * 60) * 1000;  // Corrected the calculation
-                editTextDelay.setText(getTimeString(timeSelected));
-            }
-        }, 0, 0, true);
-        dialog.show();
+        timeSelected = (long)timePicker.getHour() * 3600 * 1000 + (long)timePicker.getMinute() * 60 * 1000;
+        if(timeSelected <= 0b1111)
+            timeSelected = -1;
     }
 
     private void showTimeSlotPicker() {
@@ -145,10 +146,24 @@ public class EditMedicationActivity extends AppCompatActivity {
             timeSelected |= 0b0001;
         }
     }
+
     private void loadData() {
         editTextName.setText(medication.getName());
         editTextDescription.setText(medication.getDescription());
-        editTextDelay.setText(String.valueOf(medication.getDelay()));
+        timeSelected = medication.getDelay();
+        if (timeSelected > 0 && timeSelected <= 0b1111){
+            checkBoxMorning.setChecked((timeSelected & 0b1000) == 0b1000);
+            checkBoxNoon.setChecked((timeSelected & 0b0100) == 0b0100);
+            checkBoxEvening.setChecked((timeSelected & 0b0010) == 0b0010);
+            checkBoxNight.setChecked((timeSelected & 0b0001) == 0b0001);
+            switchInterval.setChecked(false);
+        } else {
+            Time timestamp = new Time(timeSelected);
+            timestamp.setTime(timeSelected);
+            timePicker.setHour((int) (timeSelected / 3600 / 1000));
+            timePicker.setMinute((int) ((timeSelected / 60 / 1000) % 60));
+            switchInterval.setChecked(true);
+        }
     }
     public void returnToMainActivity(View v) {
         Intent intent = new Intent(this, MainActivity.class);
@@ -161,8 +176,11 @@ public class EditMedicationActivity extends AppCompatActivity {
         medication.setName(editTextName.getText().toString());
         medication.setDescription(editTextDescription.getText().toString());
         medication.setAdaptation(addictionSwitch.isChecked());
-        if(timeSelected == -1)
-            medication.setDelay(Long.valueOf(editTextDelay.getText().toString()));
+        getInputTime();
+        if(timeSelected == -1) {
+            Toast.makeText(this, "Veuillez sélectionner un horaire", Toast.LENGTH_SHORT).show();
+            return;
+        }
         else
             medication.setDelay(timeSelected);
 

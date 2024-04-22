@@ -23,7 +23,7 @@ public class Medication {
     private long delay;
     private String name;
     private String description;
-    private Boolean adaptation; // Check if the medication time should be touched by the optimisation algorithm
+    private Boolean adaptation; // If in clean mode
 
     public Medication(int id, String name, String description, boolean adaptation, long delay){
         this.id = id;

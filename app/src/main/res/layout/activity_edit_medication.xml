@@ -44,15 +44,21 @@
             android:text="@string/delay_interval"
             android:textSize="16dp" />
 
-        <EditText
-            android:id="@+id/editTextMedicationDelay"
+        <LinearLayout
+            android:id="@+id/linearLayoutDelay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@color/white"
-            android:hint="@string/delay_interval_hint"
-            android:inputType="number"
-            android:visibility="gone" />
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
         <GridLayout
             android:id="@+id/linearLayoutTimeSlots"

@@ -27,7 +27,7 @@ public class MedicCreator extends AppCompatActivity {
 
         searchButton.setOnClickListener(v -> {
             mainGrid.removeAllViews();
-            FirestoreHelper.getInstance().fetchMedicationByName(nameText.getText().toString(), new FirestoreHelper.FirestoreCallback() {
+            FirestoreHelper.getInstance().fetchMedicationByName(nameText.getText().toString().toLowerCase(), new FirestoreHelper.FirestoreCallback() {
                 @Override
                 public void onSuccess(String name, String description, Boolean adaptation) {
                     Medication medication = new Medication(-1, name, description, adaptation, 0);

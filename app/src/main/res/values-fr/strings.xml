@@ -14,4 +14,6 @@
     <string name="save_hint">Enregistrer</string>
     <string name="cancel_hint">Annuler</string>
     <string name="search">Rechercher</string>
+    <string name="delay_interval_minutes_hint">Minutes</string>
+    <string name="delay_interval_hours_hint">Heures</string>
 </resources>
