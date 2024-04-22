@@ -131,8 +131,18 @@ public class EditMedicationActivity extends AppCompatActivity {
     }
 
     private void showTimeSlotPicker() {
+        timeSelected = 0;
         if(checkBoxMorning.isChecked()) {
-            timeSelected = 8 * 3600 * 1000;
+            timeSelected |= 0b1000;
+        }
+        if(checkBoxNoon.isChecked()) {
+            timeSelected |= 0b0100;
+        }
+        if(checkBoxEvening.isChecked()) {
+            timeSelected |= 0b0010;
+        }
+        if(checkBoxNight.isChecked()) {
+            timeSelected |= 0b0001;
         }
     }
     private void loadData() {
