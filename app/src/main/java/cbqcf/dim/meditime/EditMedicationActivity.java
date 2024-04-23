@@ -87,6 +87,7 @@ public class EditMedicationActivity extends AppCompatActivity {
         editTextName.setText(medication.getName());
         editTextDescription.setText(medication.getDescription());
         switchInterval.setChecked(medication.isFixedDelay());
+        addictionSwitch.setChecked(medication.getWeaningMode());
         timePicker.setHour((int)TimeUnit.MILLISECONDS.toHours(medication.getDelay()));
         timePicker.setMinute((int)TimeUnit.MILLISECONDS.toMinutes(medication.getDelay()) % 60);
         for(SpecialTime specialTime : medication.getSpecialTimes()) {
