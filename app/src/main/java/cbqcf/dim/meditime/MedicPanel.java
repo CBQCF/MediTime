@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 public class MedicPanel extends LinearLayout {
     private static final int UPDATE_INTERVAL_MS = 1000; // Interval for updating the UI
     private long time;
-    private long ecart = 5000;
     private TextView nameView, timeView;
     private ProgressBar progressBar;
     private LinearLayout mediLayout;
@@ -44,7 +43,6 @@ public class MedicPanel extends LinearLayout {
     public MedicPanel(Context context, Medication medication) {
         super(context);
         this.medication = medication;
-        this.ecart = medication.getDelay();
         Timestamp lastTaken = medication.getLastTaken();
 
         if (lastTaken != null) {
@@ -95,9 +93,7 @@ public class MedicPanel extends LinearLayout {
         timeView = findViewById(R.id.textTimer);
         progressBar = findViewById(R.id.progressBar);
         mediLayout = findViewById(R.id.MediLayout);
-        progressBar.setMin(0);
-        progressBar.setMax((int) (ecart / 1000));
-        mHandler.postDelayed(update, 1);
+        mHandler.postDelayed(update, UPDATE_INTERVAL_MS);
     }
 
     public void openEditMedicationActivity(Medication medication) {
@@ -109,7 +105,6 @@ public class MedicPanel extends LinearLayout {
     }
 
     private void revalidateComponent() {
-        progressBar.setMax((int) (ecart / 1000));
         if (medication != null) {
             nameView.setText(medication.getName());
         }
@@ -117,10 +112,6 @@ public class MedicPanel extends LinearLayout {
 
     public String getName() {
         return nameView.getText().toString();
-    }
-
-    public long getEcart() {
-        return ecart;
     }
 
     public void resetTime() {
@@ -139,6 +130,16 @@ public class MedicPanel extends LinearLayout {
     }
 
     private void updateTime() {
+        long currentTime = System.currentTimeMillis();
+        long lastTakenTime = medication.getLastTaken().getTime();
+        long nextTime = medication.getNextTime().getTime();
+
+        // Calculate the progress as a percentage
+        int progress = (int) ((currentTime - lastTakenTime) / (double) (nextTime - lastTakenTime) * 100);
+
+        // Set the progress on the progress bar
+        progressBar.setProgress(progress, true);
+
         if(time == 0 )
         {
             timeView.setText("Aucune Prise");
@@ -163,7 +164,6 @@ public class MedicPanel extends LinearLayout {
         if (back != null) {
             back.setColorFilter(new BlendModeColorFilter(backgroundColor, BlendMode.SRC_ATOP));
         }
-        progressBar.setProgress((int) (getTimeSinceLast() / 1000), true);
     }
 
     private boolean isOutime() {
