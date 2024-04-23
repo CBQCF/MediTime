@@ -29,8 +29,8 @@ public class MedicCreator extends AppCompatActivity {
             mainGrid.removeAllViews();
             FirestoreHelper.getInstance().fetchMedicationByName(nameText.getText().toString().toLowerCase(), new FirestoreHelper.FirestoreCallback() {
                 @Override
-                public void onSuccess(String name, String description, Boolean adaptation) {
-                    Medication medication = new Medication(-1, name, description, adaptation, 0);
+                public void onSuccess(String name, String description) {
+                    Medication medication = new Medication(-1, name, description, false, 0, false);
                     mainGrid.addView(new SearchResult(context, medication));
                 }
             });
@@ -48,18 +48,6 @@ public class MedicCreator extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-    /*
-    public void getInputTime(View v) {
-        TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                timeSelected = (hourOfDay * 3600 + minute * 60) * 1000;  // Corrected the calculation
-                timeText.setText(getTimeString(timeSelected));
-            }
-        }, 0, 0, true);
-        dialog.show();
-    }
-    */
 
     public void returnToMainActivity(View v) {
         Intent intent = new Intent(this, MainActivity.class);

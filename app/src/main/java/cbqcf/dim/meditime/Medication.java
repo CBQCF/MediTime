@@ -5,99 +5,103 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Medication {
 
     public int id;
-
-    /*
-     * Special delay codes
-     * 0b1000 : Morning
-     * 0b0100 : Noon
-     * 0b0010 : Diner
-     * 0b0001 : Night
-     *
-     * Other delay must be above 0b1111
-     */
-    private long delay;
     private String name;
     private String description;
-    private Boolean adaptation; // If in clean mode
 
-    public Medication(int id, String name, String description, boolean adaptation, long delay){
+    // Delay
+    private Boolean isFixedDelay;
+    private long delay;
+    private ArrayList<SpecialTime> specialTimes;
+
+    // Mode
+    private Boolean isWeaningMode;
+
+    // Constructors
+    public Medication(int id, String name, String description, boolean weaningMode, long delay, boolean FixedDelay, ArrayList<SpecialTime> specialTimes){
         this.id = id;
         this.name = name;
         this.description = description;
-        this.adaptation = adaptation;
+        this.isWeaningMode = weaningMode;
         this.delay = delay;
+        this.isFixedDelay = FixedDelay;
+        this.specialTimes = specialTimes;
     }
+
+    public Medication(int id, String name, String description, boolean weaningMode, long delay, boolean FixedDelay){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isWeaningMode = weaningMode;
+        this.delay = delay;
+        this.isFixedDelay = FixedDelay;
+        this.specialTimes = new ArrayList<>();
+    }
+    // End Constructors
 
     public void Take(){
         MedicationDatasource.getInstance(null).TakeMedication(this);
     }
+
     public Timestamp getNextTime(){
         Timestamp lastTaken = getLastTaken();
-        if (delay <= 0b1111){
-            // Special delay
-            // Get the start of the day
-            Calendar cal = Calendar.getInstance();
-            cal.setTimeInMillis(System.currentTimeMillis());
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-            long startOfDay = cal.getTimeInMillis();
-
-            long nextTime = Long.MAX_VALUE;
-
-            if((delay & 0b1000) == 0b1000) {
-                long morningTime = startOfDay + 8 * 3600 * 1000;
-                if (morningTime > lastTaken.getTime() && morningTime < nextTime) {
-                    nextTime = morningTime;
-                }
-            }
-            if ((delay & 0b0100) == 0b0100) {
-                long noonTime = startOfDay + 12 * 3600 * 1000;
-                if (noonTime > lastTaken.getTime() && noonTime < nextTime) {
-                    nextTime = noonTime;
-                }
-            }
-            if ((delay & 0b0010) == 0b0010) {
-                long dinnerTime = startOfDay + 19 * 3600 * 1000;
-                if (dinnerTime > lastTaken.getTime() && dinnerTime < nextTime) {
-                    nextTime = dinnerTime;
-                }
-            }
-            if ((delay & 0b0001) == 0b0001) {
-                long nightTime = startOfDay + 22 * 3600 * 1000;
-                if (nightTime > lastTaken.getTime() && nightTime < nextTime) {
-                    nextTime = nightTime;
-                }
-            }
-
-            if (nextTime == Long.MAX_VALUE) {
-                Log.w("Medication", "No next time found for medication " + name + " with delay " + delay + " and last taken at " + lastTaken.toString());
-            }
-
-            return new Timestamp(nextTime);
-        }
-        else {
-            // Delay in milliseconds
+        if (isFixedDelay)
             return new Timestamp(lastTaken.getTime() + delay);
+        else {
+            long getLastAimed = getLastAimedDate().getTime();
+            if(getLastAimed == 0)
+                return getStartOfTheDay();
+
+            return getClosest(getLastAimed);
+
+
         }
     }
 
+    private Timestamp getClosest(Long time){
+        int day = 0;
+        long closest = Long.MAX_VALUE;
+        SpecialTime closestTime = null;
+        while (closestTime==null) {
+            for (SpecialTime specialTime : specialTimes) {
+                long diff = Math.abs(specialTime.getXDayTime(day).getTime() - time);
+                if (diff < closest && specialTime.getXDayTime(day).getTime() > time) {
+                    closest = diff;
+                    closestTime = specialTime;
+                }
+            }
+            day++;
+        }
+        return new Timestamp(closestTime.getXDayTime(day-1).getTime());
+    }
+
+    private Timestamp getStartOfTheDay(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return new Timestamp(cal.getTimeInMillis());
+    }
     public Timestamp getLastTaken(){
         return MedicationDatasource.getInstance(null).getLastTaken(this);
     }
 
-    public void setId(int val){
-        id = val;
+    private Timestamp getLastAimedDate(){
+        return MedicationDatasource.getInstance(null).getLastAimedDate(this);
     }
 
     public void setDelay(long val){
-        delay = val;
+        if(val >= 0)
+            delay = val;
+        else
+            Log.e("Medication", "Delay must be positive");
     }
 
     public void setName(String val){
@@ -108,8 +112,8 @@ public class Medication {
         description = val;
     }
 
-    public void setAdaptation(boolean val) {
-        adaptation = val;
+    public void setWeaningMode(boolean val) {
+        isWeaningMode = val;
     }
 
     public long getDelay(){
@@ -124,8 +128,8 @@ public class Medication {
         return name;
     }
 
-    public Boolean getAdaptation() {
-        return adaptation;
+    public Boolean getWeaningMode() {
+        return isWeaningMode;
     }
 
     public int getId() {
@@ -136,5 +140,32 @@ public class Medication {
     @Override
     public String toString() {
         return getName();
+    }
+
+    public void loadSpecialTimes(){
+        specialTimes = MedicationDatasource.getInstance(null).getTimestamps(this);
+    }
+    public void addSpecialTime(SpecialTime specialTime){
+        specialTimes.add(specialTime);
+    }
+
+    public ArrayList<SpecialTime> getSpecialTimes(){
+        return specialTimes;
+    }
+
+    public void removeTimestamp(SpecialTime specialTime){
+        specialTimes.remove(specialTime);
+    }
+
+    public boolean isFixedDelay() {
+        return isFixedDelay;
+    }
+
+    public void setFixedDelay(boolean b) {
+        isFixedDelay = b;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

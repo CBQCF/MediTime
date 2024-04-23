@@ -15,7 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_margin="16dp"
         android:hint="@string/hint_medication_name"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:autofillHints="name" />
 
     <EditText
         android:id="@+id/editTextMedicationDescription"
@@ -24,13 +25,15 @@
         android:layout_below="@id/editTextMedicationName"
         android:layout_margin="16dp"
         android:hint="@string/hint_description"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:importantForAutofill="no" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/editTextMedicationDescription"
+        android:layout_above="@id/addiction_switch"
         android:background="@color/special_bg"
         android:layout_margin="5dp"
         android:orientation="vertical">
@@ -42,7 +45,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:text="@string/delay_interval"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/linearLayoutDelay"
@@ -53,59 +56,42 @@
 
             <TimePicker
                 android:id="@+id/timePicker"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:timePickerMode="spinner"
                 android:layout_weight="1"/>
-
         </LinearLayout>
-
-        <GridLayout
-            android:id="@+id/linearLayoutTimeSlots"
+        <RelativeLayout
+            android:id="@+id/time_grid_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:visibility="visible"
-            android:columnCount="2"
-            >
-
-            <CheckBox
-                android:id="@+id/checkBoxMorning"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ScrollView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="@string/morning"
-                android:textSize="20sp"/>
+                android:layout_above="@id/buttonAddTime"
+                android:layout_alignParentTop="true">
 
-            <CheckBox
-                android:id="@+id/checkBoxNoon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="@string/noon"
-                android:textSize="20sp"/>
+                <LinearLayout
+                    android:id="@+id/grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/checkBoxEvening"
-                android:layout_width="wrap_content"
+                </LinearLayout>
+            </ScrollView>
+            <Button
+                android:id="@+id/buttonAddTime"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="@string/evening"
-                android:textSize="20sp"/>
-
-            <CheckBox
-                android:id="@+id/checkBoxNight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:text="@string/night"
-                android:textSize="20sp"/>
-        </GridLayout>
+                android:layout_alignParentBottom="true"
+                android:text="@string/add"
+                android:onClick="addTime"/>
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -117,7 +103,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_weight="50"
-            android:text="@string/save_hint" />
+            android:onClick="saveData"
+            android:text="@string/save_hint"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/buttonCancel"
@@ -126,11 +114,12 @@
             android:layout_margin="16dp"
             android:layout_weight="50"
             android:onClick="returnToMainActivity"
-            android:text="@string/cancel_hint" />
+            android:text="@string/cancel_hint"
+            tools:ignore="ButtonStyle" />
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/deleteButton"
         android:layout_width="42dp"
         android:layout_height="39dp"
         android:layout_below="@+id/linearLayout"
@@ -140,16 +129,15 @@
         android:background="#00000000"
         android:onClick="showConfirmationDialog"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/medi_delete_24" />
+        app:srcCompat="@drawable/delete_24"
+        android:contentDescription="@string/content_delete_button" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/addiction_switch"
-        android:layout_width="133dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="57dp"
-        android:layout_marginEnd="278dp"
-        android:text="Addiction Mode" />
+        android:layout_alignParentStart="true"
+        android:layout_above="@id/layout_bottom"
+        android:text="@string/addiction_mode" />
 
 </RelativeLayout>

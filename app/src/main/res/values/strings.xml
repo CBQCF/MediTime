@@ -15,4 +15,18 @@
     <string name="search">Search</string>
     <string name="delay_interval_minutes_hint">Minutes</string>
     <string name="delay_interval_hours_hint">Hours</string>
+    <string name="remove">Remove</string>
+    <string name="addiction_mode">Weaning</string>
+    <string name="add_time_alert_title">Select the time</string>
+    <string name="validate">Validate</string>
+    <string name="cancel">Cancel</string>
+    <string name="modif_time_alert_title">Modification</string>
+    <string name="time_select_warning">Please select a time</string>
+    <string name="confirm_delete_medication">Deleting medication</string>
+    <string name="confirm_delete_medication_message">Are you sure you want to delete this medication?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="edit_medication_title">Edit medication</string>
+    <string name="content_delete_button">Delete</string>
+    <string name="no_special_time">Please add a time</string>
 </resources>

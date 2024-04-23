@@ -32,7 +32,6 @@ public class SearchResult extends LinearLayout {
         Intent intent = new Intent(getContext(), EditMedicationActivity.class);
         intent.putExtra("MEDICATION_NAME", result.getName());
         intent.putExtra("MEDICATION_DESCRIPTION", result.getDescription());
-        intent.putExtra("MEDICATION_ADAPTATION", result.getAdaptation());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
     }

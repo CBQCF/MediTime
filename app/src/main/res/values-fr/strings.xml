@@ -16,4 +16,6 @@
     <string name="search">Rechercher</string>
     <string name="delay_interval_minutes_hint">Minutes</string>
     <string name="delay_interval_hours_hint">Heures</string>
+    <string name="remove">Supprimer</string>
+    <string name="modif_time_alert_title">Modification</string>
 </resources>

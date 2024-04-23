@@ -1,8 +1,7 @@
 package cbqcf.dim.meditime;
 
-
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.sql.Timestamp;
 
@@ -18,12 +17,13 @@ public class MedicationDatasource {
     private static MedicationDatasource instance = null;
     private SQLiteDatabase database;
     private final DatabaseHelper dbHelper;
-    private final static String[] allColumns = {
+    private final static String[] MedicationsColumns = {
             DatabaseHelper.KEY_ID,
             DatabaseHelper.KEY_NAME,
             DatabaseHelper.KEY_DESCRIPTION,
+            DatabaseHelper.KEY_IS_FIXED_DELAY,
             DatabaseHelper.KEY_DELAY,
-            DatabaseHelper.KEY_ADAPTATION,
+            DatabaseHelper.KEY_WEANING_MODE,
     };
 
     private MedicationDatasource(Context context) {
@@ -47,10 +47,12 @@ public class MedicationDatasource {
 
     public List<Medication> loadMedications() {
         List<Medication> medications = new ArrayList<>();
-        Cursor cursor = database.query(DatabaseHelper.TABLE_MEDICATIONS, allColumns, null, null, null, null, null);
+        Cursor cursor = database.query(DatabaseHelper.TABLE_MEDICATIONS, MedicationsColumns, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                medications.add(cursorToMedication(cursor));
+                Medication med = cursorToMedication(cursor);
+                med.loadSpecialTimes();
+                medications.add(med);
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -62,9 +64,11 @@ public class MedicationDatasource {
         try {
             for (Medication medication : medications) {
                 ContentValues values = new ContentValues();
+                values.put(DatabaseHelper.KEY_IS_FIXED_DELAY, medication.isFixedDelay() ? 1 : 0);
                 values.put(DatabaseHelper.KEY_DELAY, medication.getDelay());
+                values.put(DatabaseHelper.KEY_NAME, medication.getName());
                 values.put(DatabaseHelper.KEY_DESCRIPTION, medication.getDescription());
-                values.put(DatabaseHelper.KEY_ADAPTATION, medication.getAdaptation() ? 1 : 0);
+                values.put(DatabaseHelper.KEY_WEANING_MODE, medication.getWeaningMode() ? 1 : 0);
 
                 // Update existing row if medication with same ID exists
                 int rowsAffected = database.update(DatabaseHelper.TABLE_MEDICATIONS, values, DatabaseHelper.KEY_ID + " = ?",
@@ -75,6 +79,8 @@ public class MedicationDatasource {
                     values.put(DatabaseHelper.KEY_NAME, medication.getName());
                     database.insert(DatabaseHelper.TABLE_MEDICATIONS, null, values);
                 }
+
+                updateSpecialTimes(medication);
             }
             database.setTransactionSuccessful();
         } finally {
@@ -84,11 +90,13 @@ public class MedicationDatasource {
 
     public void addMedication(Medication medication) {
         ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.KEY_IS_FIXED_DELAY, medication.isFixedDelay() ? 1 : 0);
         values.put(DatabaseHelper.KEY_DELAY, medication.getDelay());
         values.put(DatabaseHelper.KEY_NAME, medication.getName());
         values.put(DatabaseHelper.KEY_DESCRIPTION, medication.getDescription());
-        values.put(DatabaseHelper.KEY_ADAPTATION, medication.getAdaptation() ? 1 : 0);
-        database.insert(DatabaseHelper.TABLE_MEDICATIONS, null, values);
+        values.put(DatabaseHelper.KEY_WEANING_MODE, medication.getWeaningMode() ? 1 : 0);
+        medication.setId((int)database.insert(DatabaseHelper.TABLE_MEDICATIONS, null, values));
+        updateSpecialTimes(medication);
     }
     public void updateMedication(Medication medication) {
         ContentValues values = new ContentValues();
@@ -96,34 +104,53 @@ public class MedicationDatasource {
             addMedication(medication);
             return;
         }
-
+        values.put(DatabaseHelper.KEY_IS_FIXED_DELAY, medication.isFixedDelay() ? 1 : 0);
         values.put(DatabaseHelper.KEY_DELAY, medication.getDelay());
         values.put(DatabaseHelper.KEY_NAME, medication.getName());
         values.put(DatabaseHelper.KEY_DESCRIPTION, medication.getDescription());
-        values.put(DatabaseHelper.KEY_ADAPTATION, medication.getAdaptation() ? 1 : 0);
+        values.put(DatabaseHelper.KEY_WEANING_MODE, medication.getWeaningMode() ? 1 : 0);
 
         database.update(DatabaseHelper.TABLE_MEDICATIONS, values,"id=?",new String[]{String.valueOf(medication.id)});
+        updateSpecialTimes(medication);
     }
+
+    private void updateSpecialTimes(Medication medication) {
+        database.delete(DatabaseHelper.TABLE_SPECIAL_TIMES, DatabaseHelper.KEY_MEDICATION_ID + " = ?", new String[]{String.valueOf(medication.getId())});
+        for (SpecialTime t : medication.getSpecialTimes()) {
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.KEY_MEDICATION_ID, medication.getId());
+            values.put(DatabaseHelper.KEY_HOUR, t.Hour);
+            values.put(DatabaseHelper.KEY_MINUTE, t.Minute);
+            database.insert(DatabaseHelper.TABLE_SPECIAL_TIMES, null, values);
+        }
+    }
+
     public Medication cursorToMedication(Cursor cursor) {
         return new Medication(
                 cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_ID)),
                 cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_NAME)),
                 cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_DESCRIPTION)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_ADAPTATION)) > 0,
-                cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_DELAY))
+                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_WEANING_MODE)) > 0,
+                cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_DELAY)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_IS_FIXED_DELAY)) > 0
         );
-    }
-    public Medication newMedication(int id, String name, String description, boolean adaptation, long delay){
-        Medication newMedication = new Medication(id, name, description, adaptation, delay);
-        addMedication(newMedication);
-        return newMedication;
     }
 
     public Timestamp getLastTaken(Medication medication){
         Cursor cursor = database.query(DatabaseHelper.TABLE_TAKEN, new String[]{DatabaseHelper.KEY_DATE}, DatabaseHelper.KEY_MEDICATION_ID + " = ?", new String[]{String.valueOf(medication.getId())}, null, null, DatabaseHelper.KEY_DATE + " DESC", "1");
-        Timestamp result = null;
+        Timestamp result = new Timestamp(0);
         if (cursor.moveToFirst()) {
             result = new Timestamp(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_DATE)));
+        }
+        cursor.close();
+        return result;
+    }
+
+    public Timestamp getLastAimedDate(Medication medication){
+        Cursor cursor = database.query(DatabaseHelper.TABLE_TAKEN, new String[]{DatabaseHelper.KEY_AIMED_DATE}, DatabaseHelper.KEY_MEDICATION_ID + " = ?", new String[]{String.valueOf(medication.getId())}, null, null, DatabaseHelper.KEY_AIMED_DATE + " DESC", "1");
+        Timestamp result = new Timestamp(0);
+        if (cursor.moveToFirst()) {
+            result = new Timestamp(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_AIMED_DATE)));
         }
         cursor.close();
         return result;
@@ -133,6 +160,7 @@ public class MedicationDatasource {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.KEY_MEDICATION_ID, medication.getId());
         values.put(DatabaseHelper.KEY_DATE, System.currentTimeMillis());
+        values.put(DatabaseHelper.KEY_AIMED_DATE, medication.getNextTime().getTime());
         database.insert(DatabaseHelper.TABLE_TAKEN, null, values);
     }
 
@@ -142,5 +170,24 @@ public class MedicationDatasource {
         Log.i(DatabaseHelper.LOG , "Medication deleted with id: " + id);
         database.delete(DatabaseHelper.TABLE_MEDICATIONS, DatabaseHelper.KEY_ID
                 + " = " + id, null);
+        database.delete(DatabaseHelper.TABLE_TAKEN, DatabaseHelper.KEY_MEDICATION_ID
+                + " = " + id, null);
+        database.delete(DatabaseHelper.TABLE_SPECIAL_TIMES, DatabaseHelper.KEY_MEDICATION_ID
+                + " = " + id, null);
+    }
+
+    public ArrayList<SpecialTime> getTimestamps(Medication medication) {
+        Cursor cursor = database.query(DatabaseHelper.TABLE_SPECIAL_TIMES, new String[]{DatabaseHelper.KEY_HOUR, DatabaseHelper.KEY_MINUTE}, DatabaseHelper.KEY_MEDICATION_ID + " = ?", new String[]{String.valueOf(medication.getId())}, null, null, null);
+        ArrayList<SpecialTime> result = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                result.add(new SpecialTime(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_HOUR)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_MINUTE))
+                ));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return result;
     }
 }

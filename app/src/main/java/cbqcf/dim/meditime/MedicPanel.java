@@ -80,8 +80,6 @@ public class MedicPanel extends LinearLayout {
     }
     public void openEditor(View v )
     {
-
-
        openEditMedicationActivity(getMedication());
     }
     public MedicPanel(Context context, String name, int EcartH) {
@@ -148,7 +146,7 @@ public class MedicPanel extends LinearLayout {
         }
         String toAdd = isOutime() ? "+":"-";
        if (medication != null ) {
-           if(medication.getAdaptation() &&  isOutime())
+           if(medication.getWeaningMode() &&  isOutime())
                medication.setDelay( System.currentTimeMillis() -  medication.getLastTaken().getTime());
            timeView.setText(toAdd + LongToHmsFormat(   Math.abs(medication.getNextTime().getTime() - System.currentTimeMillis())));
        }
@@ -169,6 +167,6 @@ public class MedicPanel extends LinearLayout {
     }
 
     private boolean isOutime() {
-        return System.currentTimeMillis() > time + ecart;
+        return System.currentTimeMillis() > medication.getNextTime().getTime();
     }
 }
