@@ -2,6 +2,7 @@ package cbqcf.dim.meditime;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
@@ -13,6 +14,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
@@ -42,9 +47,9 @@ public class MedicPanel extends LinearLayout {
         this.ecart = medication.getDelay();
         Timestamp lastTaken = medication.getLastTaken();
 
-        if(lastTaken != null) {
+        if (lastTaken != null) {
             this.time = lastTaken.getTime();
-        }else{
+        } else {
             this.time = 0;
         }
         initializeUI(context);
@@ -53,12 +58,16 @@ public class MedicPanel extends LinearLayout {
         mediLayout.setOnClickListener(this::openEditor);
     }
 
-    public boolean onLongClick(View v){
+    public boolean onLongClick(View v) {
         medication.Take();
         time = medication.getLastTaken().getTime();
-
-        return  true;
+        NotifManager.scheduleNotification(getContext(),medication.getNextTime().getTime(),medication);
+        return true;
     }
+
+
+
+
     public MedicPanel(Context context) {
         super(context);
 
