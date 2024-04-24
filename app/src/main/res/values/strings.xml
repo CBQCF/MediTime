@@ -32,4 +32,6 @@
     <string name="not_yet_taken">Not yet taken</string>
     <string name="content_delete_message">Are you sure you want to delete this ?</string>
     <string name="history_title">History</string>
+    <string name="notification_content">A medication can be taken !</string>
+    <string name="channel_description">Notification when a medication must be taken</string>
 </resources>

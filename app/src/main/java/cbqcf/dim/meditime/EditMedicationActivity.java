@@ -92,7 +92,6 @@ public class EditMedicationActivity extends AppCompatActivity {
         timePicker.setHour((int)TimeUnit.MILLISECONDS.toHours(medication.getDelay()));
         timePicker.setMinute((int)TimeUnit.MILLISECONDS.toMinutes(medication.getDelay()) % 60);
         for(SpecialTime specialTime : medication.getSpecialTimes()) {
-            Log.i("SpecialTime", specialTime.toString());
             SpecialTimesGrid.addView(new SpecialTimes(this, specialTime));
         }
     }

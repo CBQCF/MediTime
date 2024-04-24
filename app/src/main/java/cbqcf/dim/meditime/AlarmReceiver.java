@@ -23,8 +23,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotifManager.CHANNEL_ID)
                 .setSmallIcon(R.drawable.pill_24px)
-                .setContentTitle("Medic Time !")
-                .setContentText("Un médicament peut être pris !")
+                .setContentTitle(context.getText(R.string.app_name))
+                .setContentText(context.getText(R.string.notification_content))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
