@@ -35,4 +35,5 @@
     <string name="history_title">Historique</string>
     <string name="notification_content">Un médicament peut etre pris !</string>
     <string name="channel_description">Notification quand un médicament doit etre pris</string>
+    <string name="delete_all_medications">Êtes-vous sur de vouloir détruire tout les médicaments ?</string>
 </resources>

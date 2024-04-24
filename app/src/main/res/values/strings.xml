@@ -34,4 +34,5 @@
     <string name="history_title">History</string>
     <string name="notification_content">A medication can be taken !</string>
     <string name="channel_description">Notification when a medication must be taken</string>
+    <string name="delete_all_medications">Do you really want to clear all medications ?</string>
 </resources>

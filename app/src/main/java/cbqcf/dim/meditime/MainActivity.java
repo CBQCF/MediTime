@@ -1,5 +1,6 @@
 package cbqcf.dim.meditime;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -62,6 +63,13 @@ public class MainActivity  extends AppCompatActivity {
         reloadMedications();
     }
 
+    public void showConfirmationDialog(View v ) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.confirm_delete_medication)
+                .setMessage(R.string.delete_all_medications)
+                .setPositiveButton(R.string.yes, (dialog, which) ->ClearMedications(v))
+                .setNegativeButton(R.string.no, (dialog, which) -> dialog.dismiss()).show();
+    }
     public void toHistory(View v){
         Intent intent = new Intent(this, HistoryActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
