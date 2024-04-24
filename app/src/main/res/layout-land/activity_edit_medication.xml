@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/teal_700"
+    android:orientation="vertical"
+    tools:context=".EditMedicationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layout_bottom"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="336dp"
+            android:layout_height="262dp">
+
+            <EditText
+                android:id="@+id/editTextMedicationName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_margin="0dp"
+                android:layout_marginTop="0dp"
+                android:autofillHints="name"
+                android:hint="@string/hint_medication_name"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editTextMedicationDescription"
+                android:layout_width="334dp"
+                android:layout_height="91dp"
+                android:layout_below="@+id/editTextMedicationName"
+                android:layout_alignStart="@+id/editTextMedicationName"
+                android:layout_alignEnd="@+id/editTextMedicationName"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/hint_description"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine" />
+
+            <ImageButton
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextMedicationDescription"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:background="#00000000"
+                android:contentDescription="@string/content_delete_button"
+                android:onClick="showConfirmationDialog"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/delete_24" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/addiction_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextMedicationDescription"
+                android:layout_marginTop="0dp"
+                android:text="@string/addiction_mode" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="262dp">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/special_bg"
+                android:orientation="vertical">
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchMedicationDelay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delay_interval"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutDelay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TimePicker
+                        android:id="@+id/timePicker"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:timePickerMode="spinner" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/time_grid_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="212dp"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/buttonAddTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="addTime"
+                        android:text="@string/add" />
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/buttonAddTime"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="0dp">
+
+                        <LinearLayout
+                            android:id="@+id/grid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+                    </ScrollView>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="50"
+            android:onClick="saveData"
+            android:text="@string/save_hint"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="50"
+            android:onClick="returnToMainActivity"
+            android:text="@string/cancel_hint"
+            tools:ignore="ButtonStyle" />
+    </LinearLayout>
+
+</RelativeLayout>

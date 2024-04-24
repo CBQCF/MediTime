@@ -128,6 +128,7 @@ public class EditMedicationActivity extends AppCompatActivity {
                 SpecialTime time = new SpecialTime(pickTime.getHour(), pickTime.getMinute());
                 medication.addSpecialTime(time);
                 SpecialTimesGrid.addView(new SpecialTimes(this, time));
+                SpecialTimesGrid.invalidate();
             })
             .setNegativeButton(R.string.cancel, null)
             .show();
