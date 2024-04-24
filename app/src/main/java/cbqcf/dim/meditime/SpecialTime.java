@@ -2,6 +2,7 @@ package cbqcf.dim.meditime;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class SpecialTime {
@@ -31,6 +32,6 @@ public class SpecialTime {
 
     @Override
     public String toString(){
-        return String.format("%02d:%02d", Hour, Minute);
+        return String.format(Locale.getDefault(), "%02d:%02d", Hour, Minute);
     }
 }

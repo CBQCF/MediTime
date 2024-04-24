@@ -61,4 +61,10 @@ public class MainActivity  extends AppCompatActivity {
         }
         reloadMedications();
     }
+
+    public void toHistory(View v){
+        Intent intent = new Intent(this, HistoryActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }

@@ -69,6 +69,7 @@ public class EditMedicationActivity extends AppCompatActivity {
     }
     private void deleteMedic(){
         MedicationDatasource.getInstance(getApplicationContext()).deleteMedication(medication);
+        NotifManager.cancelNotification(getApplicationContext(), medication);
         returnToMainActivity(null);
     }
     public void showConfirmationDialog(View v ) {

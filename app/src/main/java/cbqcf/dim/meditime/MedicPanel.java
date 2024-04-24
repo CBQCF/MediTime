@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.sql.Timestamp;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class MedicPanel extends LinearLayout {
@@ -126,7 +127,7 @@ public class MedicPanel extends LinearLayout {
         long hours = TimeUnit.MILLISECONDS.toHours(t) % 100;
         long minutes = TimeUnit.MILLISECONDS.toMinutes(t) % 60;
         long seconds = TimeUnit.MILLISECONDS.toSeconds(t) % 60;
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     private void updateTime() {
@@ -142,7 +143,7 @@ public class MedicPanel extends LinearLayout {
 
         if(time == 0 )
         {
-            timeView.setText("Aucune Prise");
+            timeView.setText(R.string.not_yet_taken);
             return;
         }
         String toAdd = isOutime() ? "+":"-";

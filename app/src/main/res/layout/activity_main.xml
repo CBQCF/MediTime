@@ -50,10 +50,17 @@
             android:src="@drawable/delete_24"
             android:onClick="ClearMedications"/>
 
-        <Space
+        <ImageButton
+            android:id="@+id/toHistory"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:maxHeight="60dp"
+            android:maxWidth="60dp"
+            android:src="@drawable/history_24px"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:background="#00000000"
+            android:layout_weight="1"
+            android:onClick="toHistory"/>
 
         <ImageButton
             android:id="@+id/button4"
