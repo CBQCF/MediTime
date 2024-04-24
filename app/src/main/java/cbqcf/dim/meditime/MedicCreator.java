@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 public class MedicCreator extends AppCompatActivity {
 
     TextView nameText;
@@ -60,7 +62,7 @@ public class MedicCreator extends AppCompatActivity {
     private String getTimeString(long millis) {
         int hours = (int) (millis / (1000 * 60 * 60));
         int minutes = (int) (millis / (1000 * 60)) % 60;
-        return String.format("%02d:%02d", hours, minutes);
+        return String.format(Locale.getDefault(), "%02d:%02d", hours, minutes);
     }
 
 }

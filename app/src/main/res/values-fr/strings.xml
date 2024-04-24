@@ -17,5 +17,22 @@
     <string name="delay_interval_minutes_hint">Minutes</string>
     <string name="delay_interval_hours_hint">Heures</string>
     <string name="remove">Supprimer</string>
+    <string name="addiction_mode">Sevrage</string>
+    <string name="add_time_alert_title">Choisis un temps</string>
+    <string name="validate">Valider</string>
+    <string name="cancel">Annuler</string>
     <string name="modif_time_alert_title">Modification</string>
+    <string name="time_select_warning">Merci de choisir un temps</string>
+    <string name="confirm_delete_medication">Suppression d\'un medicament</string>
+    <string name="confirm_delete_medication_message">Est-tu sur de vouloir supprimer ce médicament</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="edit_medication_title">Modification d\'un médicament</string>
+    <string name="content_delete_button">Supprimer</string>
+    <string name="no_special_time">Merci d\'ajouter un temps</string>
+    <string name="not_yet_taken">Pas encore pris</string>
+    <string name="content_delete_message">Est-tu sur de vouloir supprimer ceci ?</string>
+    <string name="history_title">Historique</string>
+    <string name="notification_content">Un médicament peut etre pris !</string>
+    <string name="channel_description">Notification quand un médicament doit etre pris</string>
 </resources>

@@ -45,8 +45,8 @@ public class MedicationDatasource {
         dbHelper.close();
     }
 
-    public List<Medication> loadMedications() {
-        List<Medication> medications = new ArrayList<>();
+    public ArrayList<Medication> loadMedications() {
+        ArrayList<Medication> medications = new ArrayList<>();
         Cursor cursor = database.query(DatabaseHelper.TABLE_MEDICATIONS, MedicationsColumns, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
@@ -188,6 +188,36 @@ public class MedicationDatasource {
             } while (cursor.moveToNext());
             cursor.close();
         }
+        return result;
+    }
+
+    public void deleteTaken(Medication medication, Timestamp expectedTime, Timestamp actualTime){
+        database.delete(DatabaseHelper.TABLE_TAKEN, DatabaseHelper.KEY_MEDICATION_ID + " = ? AND " + DatabaseHelper.KEY_DATE + " = ? AND " + DatabaseHelper.KEY_AIMED_DATE + " = ?", new String[]{String.valueOf(medication.getId()), String.valueOf(actualTime.getTime()), String.valueOf(expectedTime.getTime())});
+    }
+
+    public Medication getMedicationFromId(int id){
+        Cursor cursor = database.query(DatabaseHelper.TABLE_MEDICATIONS, MedicationsColumns, DatabaseHelper.KEY_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor.moveToFirst()){
+            return cursorToMedication(cursor);
+        }
+        return null;
+    }
+
+    public ArrayList<HistoryBubble> loadHistory(Medication filter, Context context){
+        Cursor cursor = database.query(DatabaseHelper.TABLE_TAKEN, new String[]{DatabaseHelper.KEY_MEDICATION_ID, DatabaseHelper.KEY_DATE, DatabaseHelper.KEY_AIMED_DATE}, DatabaseHelper.KEY_MEDICATION_ID + " = ?", new String[]{String.valueOf(filter.getId())}, null, null, DatabaseHelper.KEY_DATE + " DESC");
+        ArrayList<HistoryBubble> result = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                result.add(new HistoryBubble(
+                        context,
+                        getMedicationFromId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_MEDICATION_ID))),
+                        new Timestamp(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_DATE))),
+                        new Timestamp(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.KEY_AIMED_DATE)))
+                ));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
         return result;
     }
 }
